@@ -18,4 +18,8 @@ cl /EHsc /Fosubseq.obj /c subseq.cpp
 cl /EHsc /FoRegistExt.obj /c RegistExt.cpp 
 link /DLL /OUT:distlib.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj
 
+del *.obj
+del *.exp
+del *.lib
+
 pause

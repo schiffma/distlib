@@ -228,7 +228,7 @@ int subseqFilter(
 	
   } else
   {	 
-    const std::string errmsg = "Length of INPUT1 argument for function subseq(INPUT1) must be between 1 and " \ 
+    const std::string errmsg = "Length of INPUT1 argument for function subseq(INPUT1) must be between 1 and " \
 	                   + std::to_string(max_len) + "\n";
     pCur->base.pVtab->zErrMsg = sqlite3_mprintf(errmsg.c_str());
     return SQLITE_ERROR;	  
