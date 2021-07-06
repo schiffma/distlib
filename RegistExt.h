@@ -32,7 +32,7 @@ SOFTWARE.
 #include <cstddef>
 #include <string>
 
-// Pure C++ functions must be declared before extern "C" !!!
+// C++ functions must be declared before extern "C" !!!
 double jaroDistance(const std::string& a, const std::string& b);
 double jaroWinklerDistance(const std::string& a, const std::string& b);
 
@@ -44,25 +44,14 @@ double levenshtein_distp(const std::string &word1, const std::string &word2);
 int dl_dist(const std::string &word1, const std::string &word2);
 double dl_distp(const std::string &str1, const std::string &str2);
 
+//std::string lcstr( const std::string& s0, const std::string& s1 );
+
+// void lcstr(const char * const sa, const char * const sb, char ** const beg, char ** const end);
+std::string lcstr(const std::string &X, const std::string &Y);
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
-// scalar functions
-
-void sqrtFunc(sqlite3_context *context, int argc, sqlite3_value **argv);
-void logFunc(sqlite3_context *context, int argc, sqlite3_value **argv);
-void expFunc(sqlite3_context *context, int argc, sqlite3_value **argv);
-void powFunc(sqlite3_context *context, int argc, sqlite3_value **argv);
-
-// aggregate functions
-
-void CorrelStep(sqlite3_context *context, int argc, sqlite3_value **argv);
-void CorrelFinal(sqlite3_context *context);
-void SpCorrelStep(sqlite3_context *context, int argc, sqlite3_value **argv);
-void SpCorrelFinal(sqlite3_context *context);
 
 
 extern const sqlite3_api_routines *sqlite3_api;

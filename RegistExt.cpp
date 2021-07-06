@@ -30,19 +30,19 @@ SOFTWARE.
 
 Compile on Windows by calling win64build_extensions_generic.bat :
 
-cl /EHsc /FoSQLiteExt.obj /c SQLiteExt.cpp 
 cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp 
 cl /EHsc /Fopylcs.obj /c pylcs.cpp 
 cl /EHsc /Fdldist.obj /c dldist.cpp 
 cl /EHsc /Foperm.obj /c perm.cpp 
 cl /EHsc /Fosubseq.obj /c subseq.cpp 
 cl /EHsc /FoRegistExt.obj /c RegistExt.cpp 
-link /DLL /OUT:distlib.dll SQLiteExt.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj
+link /DLL /OUT:distlib_64.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj
  
  on Windows
  sqlite> .load distlib.dll
  sqlite>
  
+ DB Browser for SQLite -> "Load Extension..."
 
 */
 
@@ -70,16 +70,12 @@ void jaroDistanceFunc(
   int argc,
   sqlite3_value **argv
 ){
-  int nIn1;
-  int nIn2;
   double l = 0;
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
-  if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  nIn1 = sqlite3_value_bytes(argv[0]);
-  nIn2 = sqlite3_value_bytes(argv[1]);  
-  std::string zIn1( reinterpret_cast<char const*>(sqlite3_value_text(argv[0])), nIn1 ) ;
-  std::string zIn2( reinterpret_cast<char const*>(sqlite3_value_text(argv[1])), nIn2 ) ;
+  if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return; 
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = jaroDistance(zIn1, zIn2);
   sqlite3_result_double(context, l);  
 }
@@ -90,16 +86,12 @@ void jaroWinklerDistanceFunc(
   int argc,
   sqlite3_value **argv
 ){
-  int nIn1;
-  int nIn2;
   double l = 0;
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  nIn1 = sqlite3_value_bytes(argv[0]);
-  nIn2 = sqlite3_value_bytes(argv[1]);  
-  std::string zIn1( reinterpret_cast<char const*>(sqlite3_value_text(argv[0])), nIn1 ) ;
-  std::string zIn2( reinterpret_cast<char const*>(sqlite3_value_text(argv[1])), nIn2 ) ;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = jaroWinklerDistance(zIn1, zIn2);
   sqlite3_result_double(context, l);  
 }
@@ -109,16 +101,12 @@ void levenshteinDistanceFunc(
   int argc,
   sqlite3_value **argv
 ){
-  int nIn1;
-  int nIn2;
   double l = 0;
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  nIn1 = sqlite3_value_bytes(argv[0]);
-  nIn2 = sqlite3_value_bytes(argv[1]);  
-  std::string zIn1( reinterpret_cast<char const*>(sqlite3_value_text(argv[0])), nIn1 ) ;
-  std::string zIn2( reinterpret_cast<char const*>(sqlite3_value_text(argv[1])), nIn2 ) ;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   // l = levenshtein_distance(zIn1, zIn2);
   l = levenshtein_dist(zIn1, zIn2);
   sqlite3_result_int64(context, l);  
@@ -129,16 +117,12 @@ void levenshteinDistanceFuncP(
   int argc,
   sqlite3_value **argv
 ){
-  int nIn1;
-  int nIn2;
   double l = 0;
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  nIn1 = sqlite3_value_bytes(argv[0]);
-  nIn2 = sqlite3_value_bytes(argv[1]);  
-  std::string zIn1( reinterpret_cast<char const*>(sqlite3_value_text(argv[0])), nIn1 ) ;
-  std::string zIn2( reinterpret_cast<char const*>(sqlite3_value_text(argv[1])), nIn2 ) ;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   //l = levenshtein_distancep(zIn1, zIn2);
   l = levenshtein_distp(zIn1, zIn2);
   sqlite3_result_double(context, l);  
@@ -149,16 +133,12 @@ void dl_distFunc(
   int argc,
   sqlite3_value **argv
 ){
-  int nIn1;
-  int nIn2;
   double l = 0;
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  nIn1 = sqlite3_value_bytes(argv[0]);
-  nIn2 = sqlite3_value_bytes(argv[1]);  
-  std::string zIn1( reinterpret_cast<char const*>(sqlite3_value_text(argv[0])), nIn1 ) ;
-  std::string zIn2( reinterpret_cast<char const*>(sqlite3_value_text(argv[1])), nIn2 ) ;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = dl_dist(zIn1, zIn2);
   sqlite3_result_int64(context, l);  
 }
@@ -168,20 +148,30 @@ void dl_distFuncP(
   int argc,
   sqlite3_value **argv
 ){
-  int nIn1;
-  int nIn2;
   double l = 0;
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  nIn1 = sqlite3_value_bytes(argv[0]);
-  nIn2 = sqlite3_value_bytes(argv[1]);  
-  std::string zIn1( reinterpret_cast<char const*>(sqlite3_value_text(argv[0])), nIn1 ) ;
-  std::string zIn2( reinterpret_cast<char const*>(sqlite3_value_text(argv[1])), nIn2 ) ;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = dl_distp(zIn1, zIn2);
   sqlite3_result_double(context, l);  
 }
 
+void lcstrFuncP(
+  sqlite3_context *context,
+  int argc,
+  sqlite3_value **argv
+){
+  std::string l = "";
+  assert( argc==2 );
+  if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
+  if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  l = lcstr(zIn1, zIn2);
+  sqlite3_result_text(context, l.c_str(),l.size(), SQLITE_TRANSIENT);  
+}
 
 sqlite3 *thisdb = NULL;
 
@@ -232,6 +222,10 @@ int sqlite3_distlib_init( // always use lower case
   rc = sqlite3_create_function(db, "dlsim", 2,
                    SQLITE_UTF8|SQLITE_DETERMINISTIC,
                    0, dl_distFuncP, 0, 0); 
+
+  rc = sqlite3_create_function(db, "lcstr", 2,
+                   SQLITE_DETERMINISTIC,
+                   0, lcstrFuncP, 0, 0); 
 
 #endif
   return rc;

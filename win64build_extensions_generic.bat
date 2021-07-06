@@ -8,15 +8,14 @@ CD %EXT_PATH%
 
 :: Build extensions
 
-rem cl /EHsc /FoSQLiteExt.obj /c SQLiteExt.cpp 
 cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp 
 cl /EHsc /Fopylcs.obj /c pylcs.cpp 
 cl /EHsc /Fdldist.obj /c dldist.cpp 
+cl /EHsc /Flcsubstr.obj /c lcsubstr.cpp 
 cl /EHsc /Foperm.obj /c perm.cpp 
-rem cl /EHsc /Fosubseq.obj /c subseq.cpp
 cl /EHsc /Fosubseq.obj /c subseq.cpp 
 cl /EHsc /FoRegistExt.obj /c RegistExt.cpp 
-link /DLL /OUT:distlib_64.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj
+link /DLL /OUT:distlib_64.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj
 
 del *.obj
 del *.exp
