@@ -14,7 +14,7 @@
 | `jsim(x,y)` | Jaro similarity as double between 0.0 and 1.0 | select jsim('Clark Kent','Claire Kent'); | 0.869023569023569 |
 | `jwsim(x,y)` | Jaro-Winkler similarity as double between 0.0 and 1.0 | select jwsim('Peter Parker','Pete Parker'); | 0.928787878787879 |
 | `lcstr(x,y)` | Longest common substring | select lcstr('carpenter', 'sharpener'); | arpen |
-| `perm(x)` | Permutation table-valued function | select * from perm('Teststring1'); | Teststring1<BR> ... |
+| `perm(x)` | Permutation table-valued function | select * from perm('Teststring1'); | Teststring1<BR> ... <BR> n! rows |
 
 
 
