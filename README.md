@@ -7,7 +7,8 @@
 | | | select ldist('a cat','an act'); | 3 |
 | `lsim(x,y)` | Levenshtein similarity as double between 0.0 and 1.0  | select lsim('kitten','sitting'); | 0.571428571428571 |
 | `dldist(x,y)` | Damerau–Levenshtein distance as whole number | select  dldist('a cat','an act'); | 2 |
-| `ldist(x,y)` | Jaro similarity as double between 0.0 and 1.0 | select lsim('Clark Kent','Claire Kent'); | 0.818181818181818 |
+| `dlsim(x,y)` | Damerau–Levenshtein similarity as double between 0.0 and 1.0 | select dlsim('a cat','an act'); | 0.666666666666667 |
+| `jsim(x,y)` | Jaro similarity as double between 0.0 and 1.0 | select jsim('Clark Kent','Claire Kent'); | 0.869023569023569 |
 | `jwsim(x,y)` | Jaro-Winkler similarity as double between 0.0 and 1.0 | select jwsim('Peter Parker','Pete Parker'); | 0.928787878787879 |
 
 
