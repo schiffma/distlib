@@ -3,11 +3,11 @@
 
 | SQLite function | Description |  Query example | Result example
 | --- | --- | --- | --- | 
-| `ldist(x,y)` | Levenshtein distance as whole number  | select ldist('kitten','sitting'); | 3 |
+| `ldist(x,y)` | Levenshtein distance as integer >= 0 | select ldist('kitten','sitting'); | 3 |
 | | | select ldist('a cat','an act'); | 3 |
 | | | select ldist('fish', 'ifsh'); | 2 |
 | `lsim(x,y)` | Levenshtein similarity as double between 0.0 and 1.0  | select lsim('kitten','sitting'); | 0.571428571428571 |
-| `dldist(x,y)` | Damerau–Levenshtein distance as whole number | select ldist('kitten','sitting'); | 3 |
+| `dldist(x,y)` | Damerau–Levenshtein distance as integer >= 0 | select ldist('kitten','sitting'); | 3 |
 | | | select  dldist('a cat','an act'); | 2 |
 | | | select dldist('fish', 'ifsh'); | 1 |
 | `dlsim(x,y)` | Damerau–Levenshtein similarity as double between 0.0 and 1.0 | select dlsim('a cat','an act'); | 0.666666666666667 |
