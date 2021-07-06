@@ -5,8 +5,8 @@
 | --- | --- | --- | --- | 
 | `ldist(x,y)` | Levenshtein distance as whole number  | select ldist('kitten','sitting'); | 3 |
 | `lsim(x,y)` | Levenshtein similarity as double between 0.0 and 1.0  | select lsim('kitten','sitting'); | 0.571428571428571 |
+| 'dldist(x,y)' |
 | `ldist(x,y)` | Jaro similarity as double between 0.0 and 1.0 | select lsim('Clark Kent','Claire Kent'); | 0.818181818181818 |
-| `jsim(x,y)` | Jaro similarity as double between 0.0 and 1.0 | | |
 | `jwsim(x,y)` | Jaro-Winkler similarity as double between 0.0 and 1.0 | select jwsim('Peter Parker','Pete Parker'); | 0.928787878787879 |
 
 
