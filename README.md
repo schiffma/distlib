@@ -1,10 +1,13 @@
 # distlib
  Distance related functions implemented as SQLite run-time loadable extension.
 
-| Function | Description |
+| SQlite function | Description | Example Query | Example Result
 | --- | --- |
-| `jsim(x,y)` | Jaro similarity normalized to double between 0.0 and 1.0 |
-| `jwsim(x,y)` | Jaro-Winkler similarity normalized to double between 0.0 and 1.0 |
+| `ldist(x,y)` | Levenshtein distance as whole number  |||
+| `ldist(x,y)` | Jaro similarity normalized to double between 0.0 and 1.0 |||
+| `jwsim(x,y)` | Jaro-Winkler similarity normalized to double between 0.0 and 1.0 |||
+| `jsim(x,y)` | Jaro similarity normalized to double between 0.0 and 1.0 |||
+| `jwsim(x,y)` | Jaro-Winkler similarity normalized to double between 0.0 and 1.0 |||
 
 WITH orig_ AS (SELECT 'ABCDEFGHIJK' AS orig),
 subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
