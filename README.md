@@ -1,7 +1,7 @@
 # distlib
  Distance related functions implemented as SQLite run-time loadable extension.
 
-| SQlite function | Description |  Query example | Result example
+| SQLite function | Description |  Query example | Result example
 | --- | --- | --- | --- | 
 | `ldist(x,y)` | Levenshtein distance as whole number  | select ldist('kitten','sitting'); | 3 |
 | | | select ldist('a cat','an act'); | 3 |
