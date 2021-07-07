@@ -10,7 +10,8 @@
 | `jsim(x,y)` | Jaro similarity as double between 0.0 and 1.0 | 
 | `jwsim(x,y)` | Jaro-Winkler similarity as double between 0.0 and 1.0 | 
 | `lcstr(x,y)` | Longest common substring |
-| `perm(x)` | Permutation table-valued function for strings up to len(x)>=11 | 
+| `perm(x)` | Permutation table-valued function for strings up to len(x)>=10 | 
+| `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=8 | 
 <br>
 Examples
 
@@ -26,9 +27,10 @@ Examples
 | `select dldist('fish', 'ifsh');` | 1 |   
 | `select ldist('kitten','sitting');` | 3 | 
 | `select jsim('Clark Kent','Claire Kent');` | 0.869023569023569 |
-| `select jwsim('Peter Parker','Pete Parker'); | 0.928787878787879 |
+| `select jwsim('Peter Parker','Pete Parker');` | 0.928787878787879 |
 | `select lcstr('carpenter', 'sharpener');` | arpen |
 | `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG ... n! rows |
+| `select * from subseq('ABCDEFGH');` | A,AB,ABC ... 2^n-1 rows |
  
 `WITH orig_ AS (SELECT 'ABCDEFGHIJK' AS orig),
 subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
