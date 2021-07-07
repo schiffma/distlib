@@ -32,6 +32,7 @@ Examples:
 | `select lcstr('carpenter', 'sharpener');` | arpen |
 | `select lcstr('carpenter', 'sharpener');` | 5 |
 | `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG, ... n! rows |
+| `select * from perm ('Smørrebrød');` | Smørrebrød,Smørrebødr, ... n! rows |
 | `select * from subseq('ABCDEFGH');` | A,AB,ABC, ... 2^n-1 rows |
 <br>
 Bulk generation examples:
