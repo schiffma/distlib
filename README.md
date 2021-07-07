@@ -16,18 +16,19 @@ Examples
 
 | Query example | Result example |
 |  --- | --- | 
-| select ldist('kitten','sitting'); | 3 | 
-| select lsim('kitten','sitting'); | 0.571428571428571 |
-| select ldist('a cat','an act'); | 3 | 
-| select dldist('a cat','an act'); | 2 | 
-| select dlsim('a cat','an act'); | 0.666666666666667 |
-| select ldist('fish', 'ifsh'); | 2 |
-| select dldist('fish', 'ifsh'); | 1 |   
-| select ldist('kitten','sitting'); | 3 | 
-| select jsim('Clark Kent','Claire Kent'); | 0.869023569023569 |
-| select jwsim('Peter Parker','Pete Parker'); | 0.928787878787879 |
-| select lcstr('carpenter', 'sharpener'); | arpen |
-| select * from perm('Teststring1'); | Teststring1<BR> ... <BR> n! rows |
+| `select ldist('kitten','sitting');` | 3 | 
+| `select lsim('kitten','sitting');` | 0.571428571428571 |
+| `select ldist('a cat','an act');` | 3 | 
+| `select dldist('a cat','an act');` | 2 | 
+| `select lsim('a cat','an act');` | 0.5 |
+| `select dlsim('a cat','an act');` | 0.666666666666667 |
+| `select ldist('fish', 'ifsh');` | 2 |
+| `select dldist('fish', 'ifsh');` | 1 |   
+| `select ldist('kitten','sitting');` | 3 | 
+| `select jsim('Clark Kent','Claire Kent');` | 0.869023569023569 |
+| `select jwsim('Peter Parker','Pete Parker'); | 0.928787878787879 |
+| `select lcstr('carpenter', 'sharpener');` | arpen |
+| `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG ... n! rows |
  
 `WITH orig_ AS (SELECT 'ABCDEFGHIJK' AS orig),
 subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
