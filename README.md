@@ -10,8 +10,9 @@
 | `jsim(x,y)` | Jaro similarity as double between 0.0 and 1.0 | 
 | `jwsim(x,y)` | Jaro-Winkler similarity as double between 0.0 and 1.0 | 
 | `lcstr(x,y)` | Longest common substring |
+| `lcstrl(x,y)` | Longest common substring length |
 | `perm(x)` | Permutation table-valued function for strings up to len(x)>=10 | 
-| `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=8 | 
+| `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=16 | 
 <br>
 Examples:
 
@@ -29,8 +30,9 @@ Examples:
 | `select jsim('Clark Kent','Claire Kent');` | 0.869023569023569 |
 | `select jwsim('Peter Parker','Pete Parker');` | 0.928787878787879 |
 | `select lcstr('carpenter', 'sharpener');` | arpen |
-| `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG ... n! rows |
-| `select * from subseq('ABCDEFGH');` | A,AB,ABC ... 2^n-1 rows |
+| `select lcstr('carpenter', 'sharpener');` | 5 |
+| `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG, ... n! rows |
+| `select * from subseq('ABCDEFGH');` | A,AB,ABC, ... 2^n-1 rows |
 <br>
 Bulk generation examples:
 
