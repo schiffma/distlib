@@ -13,7 +13,7 @@
 | `perm(x)` | Permutation table-valued function for strings up to len(x)>=10 | 
 | `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=8 | 
 <br>
-Examples
+Examples:
 
 | Query example | Result example |
 |  --- | --- | 
@@ -31,7 +31,9 @@ Examples
 | `select lcstr('carpenter', 'sharpener');` | arpen |
 | `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG ... n! rows |
 | `select * from subseq('ABCDEFGH');` | A,AB,ABC ... 2^n-1 rows |
- 
+<br>
+Bulk generation examples:
+
 `WITH orig_ AS (SELECT 'ABCDEFGHIJK' AS orig),
 subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
 SELECT orig, subseq, lsim(orig, subseq) lsim, dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_;`
