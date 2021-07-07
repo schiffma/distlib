@@ -34,12 +34,13 @@ SOFTWARE.
 #include <cstdlib>
 
 #include "RegistExt.h"
-// #include "helpers.h"
 #include <assert.h>
 #include <memory.h>
 
 
 #ifndef SQLITE_OMIT_VIRTUALTABLE
+
+
 
 
 
@@ -57,24 +58,27 @@ int factorial(int n)
 }
 
 
-/* Modified permutation algorithm in C++ from 
+/* Modified C permutation algorithm from 
 https://github.com/Anjan50/https-www.hackerrank.com-challenges-permutations-of-strings-problem/blob/master/Permutations%20of%20Strings.c
+
+Changed from std::string to std::vector<std::string> because of possible unicode characters having character size 2 or 4
+
 */
 
-void swap2(std::string &s, int i, int j){
-    char tmp = s[i];
+void swap2(std::vector<std::string> &s, int i, int j){
+    std::string tmp = s[i];
     s[i] = s[j];
     s[j] = tmp;
 }
 
 
-void reverse2(std::string &s, int start, int end){
+void reverse2(std::vector<std::string> &s, int start, int end){
     while(start<end){
         swap2(s,start++,end--);
     }
 }
 
-int next_permutation2(int n, std::string &s)
+int next_permutation2(int n, std::vector<std::string> &s)
 {
     for(int i=n-2;i>-1;i--){
         if(s[i+1] > s[i]){
@@ -106,6 +110,8 @@ struct perm_cursor {
   sqlite3_int64 iRowid;      /* The rowid */
   std::string    perm;
   sqlite3_int64  nrows;
+  sqlite3_int64  len_utf8;
+  std::vector<std::string>    permv;  
 };
 
 
@@ -185,12 +191,12 @@ int permColumn(
   int i                       /* Which column to return */
 ){
   perm_cursor *pCur = (perm_cursor*)cur;
-
   if (i==0) { // only one column to return
      if (pCur->iRowid > 0 ){
-	   int r  = next_permutation2(pCur->perm.size(), pCur->perm);      
+	   int r  = next_permutation2(pCur->len_utf8 , pCur->permv);      
      }   
-    sqlite3_result_text(ctx, pCur->perm.c_str(),pCur->perm.size(),0);
+	pCur->perm = join(pCur->permv);
+    sqlite3_result_text(ctx, pCur->perm.c_str(), pCur->perm.size(),0);
   }
   return SQLITE_OK;
 }
@@ -223,11 +229,14 @@ int permFilter(
   int argc, sqlite3_value **argv
 ){
   perm_cursor *pCur = (perm_cursor *)pVtabCursor;
-  const int max_len = 11;
-  int l = 0; 
+  const int max_len = 10;
+  //int l = 0; 
   
   if (argc > 0) {
-    l = strlen((const char*)sqlite3_value_text(argv[0]));
+    ///l = strlen((const char*)sqlite3_value_text(argv[0])); 	
+    pCur->perm = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
+	pCur->permv = utf8_split(pCur->perm);
+	pCur->len_utf8 = pCur->permv.size(); // important for non-ASCII characters !!!	
   }
   else {
     const char *zText = "Function PERM(INPUT1) requires exactly one argument.\n";
@@ -235,15 +244,15 @@ int permFilter(
     return SQLITE_ERROR;	  
   }
 
-  if(argc > 0 && l <= max_len)
+  if(pCur->len_utf8 >0 && pCur->len_utf8 <= max_len)
   {
-    pCur->perm = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
-	pCur->nrows = (pCur->perm.size() > 0) ? factorial(pCur->perm.size()) : 0;
+	pCur->nrows = (pCur->len_utf8  > 0) ? factorial(pCur->len_utf8 ) : 0;
+	//pCur->nrows = (pCur->perm.size() > 0) ? factorial(pCur->perm.size()) : 0;
     pCur->iRowid = 0;	
   } else
   {	
-    const std::string errmsg = "INPUT1 argument for function PERM(INPUT1) too long, only character length >= " \
-	                            + std::to_string(max_len) + " supported\n";
+    const std::string errmsg = "Length of INPUT1 argument for function perm(INPUT1) must be between 1 and " \
+	                   + std::to_string(max_len) + "\n";
     pCur->base.pVtab->zErrMsg = sqlite3_mprintf(errmsg.c_str());
     return SQLITE_ERROR;	  
   }

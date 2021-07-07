@@ -23,6 +23,11 @@ vector<string> utf8_split(const string &str){
     return split;
 }
 
+// L. Schiffmann, July 2021
+int utf8_length(const string &str){
+    return utf8_split(str).size();
+}
+
 
 // 最长公共子序列（不连续）
 int lcs_length_(const string &str1, const string &str2) {
@@ -56,9 +61,10 @@ int lcs_length_(const string &str1, const string &str2) {
     }
     return dp[m][n];
 }
-  
-// 编辑距离
-int levenshtein_distance(const string &str1, const string &str2) {
+
+
+// 最长公共子串（连续）
+int lcs2_length_(const string &str1, const string &str2) {
     if (str1 == "" || str2 == "")
         return 0;
     vector<string> s1 = utf8_split(str1);
@@ -67,30 +73,38 @@ int levenshtein_distance(const string &str1, const string &str2) {
     int n = s2.size();
     vector<vector<int>> dp(m + 1, vector<int>(n + 1));
     int i, j;
+    int max = 0;
 
     for (i = 0; i <= m; i++) {
-        dp[i][0] = i;
+        dp[i][0] = 0;
     }
     for (j = 0; j <= n; j++) {
-        dp[0][j] = j;
+        dp[0][j] = 0;
     }
     for (i = 1; i <= m; i++) {
         for (j = 1; j <= n; j++) {
             if (s1[i - 1] == s2[j - 1]) {
-                dp[i][j] = dp[i - 1][j - 1];
-            } else {
-                dp[i][j] = 1 + min({dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]});
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+                if (dp[i][j] > max){
+                    max = dp[i][j];
+                }
+            }
+            else {
+                dp[i][j] = 0;
             }
         }
     }
-    return dp[m][n];
+    return max;
 }
 
-// L. Schiffmann, 2021
-double levenshtein_distancep(const string &str1, const string &str2) {
-  int l = levenshtein_distance(str1,str2);
-  int m = str1.size();
-  int n = str2.size();  
-  return 1.0 - (double)l / max(m,n);
+
+// TODO 返回子序列
+int lcs(const string &str1, const string &str2){
+    return lcs_length_(str1, str2);
 }
 
+
+// TODO 返回子串
+int lcs2(const string &str1, const string &str2){
+    return lcs2_length_(str1, str2);
+}

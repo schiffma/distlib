@@ -10,8 +10,8 @@ using namespace std;
 // Function to find longest common substring.
 string lcstr(const string &X, const string &Y)
 {
-	// If a string is empty then return empty string
-	if (X == "" || Y == "") return "";
+    // If a string is empty then return empty string
+    if (X == "" || Y == "") return "";
     // Find length of both the strings.
     int m = X.length();
     int n = Y.length();

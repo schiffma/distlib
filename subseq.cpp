@@ -53,7 +53,8 @@ extern "C" {
 // string s.
 void generate(std::set<std::string>& st, std::string s)
 {
-    if (s.size() == 0)
+	int s_size = utf8_length(s);
+    if (s_size == 0)
         return;
  
     // If current string is not already present.
@@ -62,10 +63,33 @@ void generate(std::set<std::string>& st, std::string s)
  
         // Traverse current string, one by one
         // remove every character and recur.
-        for (int i = 0; i < s.size(); i++) {
+        for (int i = 0; i < s_size; i++) {
             std::string t = s;
             t.erase(i, 1);
             generate(st, t);
+        }
+    }
+    return;
+}
+
+// Finds and stores result in st for a given
+// string s.
+void generate_(std::set<std::vector<std::string>>& st, std::vector<std::string> vs)
+{
+	int s_size = vs.size();
+    if (s_size == 0)
+        return;
+ 
+    // If current string is not already present.
+    if (st.find(vs) == st.end()) {
+        st.insert(vs);
+ 
+        // Traverse current string, one by one
+        // remove every character and recur.
+        for (int i = 0; i < s_size; i++) {
+            std::vector<std::string> t = vs;
+            t.erase(t.begin()+i);
+            generate_(st, t);
         }
     }
     return;
@@ -83,8 +107,9 @@ struct subseq_cursor {
   sqlite3_int64 iRowid;      /* The rowid */
   std::string    subseq;
   sqlite3_int64  nrows;
-  std::set<std::string> st;
-  std::set<std::string>::iterator it; 
+  sqlite3_int64  len_utf8;  
+  std::set<std::vector<std::string>> st;
+  std::set<std::vector<std::string>>::iterator it; 
 };
 
 
@@ -167,7 +192,7 @@ int subseqColumn(
   subseq_cursor *pCur = (subseq_cursor*)cur;
 
   if (i==0) {   // only 1 column to return
-    pCur->subseq = *pCur->it;
+    pCur->subseq = join(*pCur->it);
     sqlite3_result_text(ctx, pCur->subseq.c_str(),pCur->subseq.size(),0);
   }
   //pCur->it++;
@@ -206,9 +231,11 @@ int subseqFilter(
   subseq_cursor *pCur = (subseq_cursor *)pVtabCursor;
   const int max_len = 16;
   int l = 0; 
+  std::string s;
   
   if (argc > 0) {
-    l = strlen((const char*)sqlite3_value_text(argv[0]));
+    s = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
+	l  = utf8_split(s).size();	
   }
   else {
     const char *zText = "Function subseq(INPUT1) requires exactly one non-empty argument.\n";
@@ -216,13 +243,13 @@ int subseqFilter(
     return SQLITE_ERROR;	  
   }
 
-  if(argc > 0 && l>0 && l <= max_len)
+  if(l>0 && l <= max_len)
   {
 	//pCur->subseq = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));  
-	std::string s = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
-	generate(pCur->st, s);
+	//std::string s = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
+	generate_(pCur->st, utf8_split(s));
 	pCur->it = pCur->st.begin();	  
-	pCur->subseq = *pCur->it;
+	pCur->subseq = join(*pCur->it);
 	pCur->nrows = pCur->st.size();
     pCur->iRowid = 0;	
 	

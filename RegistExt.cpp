@@ -50,6 +50,8 @@ link /DLL /OUT:distlib_64.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj 
 #include <vector>
 #include <cstdlib>
 #include <string>
+#include <algorithm> // transform
+#include <iterator>  // begin, end, and back_inserter
 
 #include "RegistExt.h"
 
@@ -57,6 +59,13 @@ link /DLL /OUT:distlib_64.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj 
 #include <assert.h>
 #include <string.h>
 
+std::string join(const std::vector<std::string> &v) {
+  std::string s="";
+   for (auto e: v){
+     s+=e;
+   }
+   return s;
+}
 
 #ifdef __cplusplus
 extern "C" {
@@ -101,7 +110,7 @@ void levenshteinDistanceFunc(
   int argc,
   sqlite3_value **argv
 ){
-  double l = 0;
+  sqlite3_int64 l = 0;
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
@@ -133,7 +142,7 @@ void dl_distFunc(
   int argc,
   sqlite3_value **argv
 ){
-  double l = 0;
+  sqlite3_int64 l = 0;
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
@@ -173,6 +182,52 @@ void lcstrFuncP(
   sqlite3_result_text(context, l.c_str(),l.size(), SQLITE_TRANSIENT);  
 }
 
+void lcstrlFuncP(
+  sqlite3_context *context,
+  int argc,
+  sqlite3_value **argv
+){
+  sqlite3_int64 l = 0;
+  assert( argc==2 );
+  if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
+  if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  l = lcs2_length_(zIn1, zIn2);
+  sqlite3_result_int64(context, l);  
+}
+
+/* void dummyFuncP(
+  sqlite3_context *context,
+  int argc,
+  sqlite3_value **argv
+){
+  std::string l = "";
+  assert( argc==2 );
+  if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
+  if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  //std::u32string s = StringToWString(zIn1);
+  std::u32string s =  U"aöü";
+  s = s + s[2];
+  sqlite3_result_text(context, u32_to_ascii(s).c_str(), u32_to_ascii(s).size(), SQLITE_TRANSIENT);  
+} */
+
+
+
+/* void dummyFunc1P(
+  sqlite3_context *context,
+  int argc,
+  sqlite3_value **argv
+){
+  int l = 0;
+  assert( argc==1 );
+  if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
+  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  sqlite3_result_int64(context, StringToWString(zIn1).size());  
+} */
+
 sqlite3 *thisdb = NULL;
 
 #ifdef _WIN32
@@ -196,8 +251,8 @@ int sqlite3_distlib_init( // always use lower case
     return SQLITE_ERROR;
   }
 
-  rc = sqlite3_create_module(db, "PERM",  &permModule, 0);
-  rc = sqlite3_create_module(db, "SUBSEQ",  &subseqModule, 0);
+  rc = sqlite3_create_module(db, "perm",  &permModule, 0);
+  rc = sqlite3_create_module(db, "subseq",  &subseqModule, 0);
   
   // distance related functions
   rc = sqlite3_create_function(db, "jsim", 2,
@@ -224,8 +279,20 @@ int sqlite3_distlib_init( // always use lower case
                    0, dl_distFuncP, 0, 0); 
 
   rc = sqlite3_create_function(db, "lcstr", 2,
-                   SQLITE_DETERMINISTIC,
+                   SQLITE_UTF8|SQLITE_DETERMINISTIC,
                    0, lcstrFuncP, 0, 0); 
+
+  rc = sqlite3_create_function(db, "lcstrl", 2,
+                   SQLITE_UTF8|SQLITE_DETERMINISTIC,
+                   0, lcstrlFuncP, 0, 0); 
+
+/*   rc = sqlite3_create_function(db, "dummy", 2,
+                   SQLITE_UTF8|SQLITE_DETERMINISTIC,
+                   0, dummyFuncP, 0, 0); 
+				   
+  rc = sqlite3_create_function(db, "dummy", 1,
+                   SQLITE_UTF8|SQLITE_DETERMINISTIC,
+                   0, dummyFunc1P, 0, 0); 	 */			   
 
 #endif
   return rc;
