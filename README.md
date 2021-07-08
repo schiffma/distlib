@@ -31,6 +31,7 @@ Examples:
 | `select ldist('kitten','sitting');` | 3 | 
 | `select jsim('Clark Kent','Claire Kent');` | 0.869023569023569 |
 | `select jwsim('Peter Parker','Pete Parker');` | 0.928787878787879 |
+| `select jwsim('Péter Pärker','Péte Pärker');` | 0.928787878787879 |
 | `select lcstr('carpenter', 'sharpener');` | arpen |
 | `select lcstr('carpenter', 'sharpener');` | 5 |
 | `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG, ... n! rows |
