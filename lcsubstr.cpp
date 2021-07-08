@@ -1,11 +1,14 @@
-// modified version from 
+// modified uf8-supported version of 
 // https://www.geeksforgeeks.org/print-longest-common-substring/
 
 // Space optimized CPP implementation to print
 // longest common substring.
 #include <string>
 #include <vector>
-using namespace std;
+#include "utf8_unicode.hpp"
+
+using std::string;
+using std::vector;
  
 // Function to find longest common substring.
 string lcstr(const string &X, const string &Y)
@@ -13,8 +16,14 @@ string lcstr(const string &X, const string &Y)
     // If a string is empty then return empty string
     if (X == "" || Y == "") return "";
     // Find length of both the strings.
-    int m = X.length();
-    int n = Y.length();
+    //int m = X.length();
+    //int n = Y.length();
+
+	vector<string> X_ = utf8_split(X);
+    vector<string> Y_ = utf8_split(Y);
+    int m = X_.size();
+    int n = Y_.size();		
+	
  
     // Variable to store length of longest
     // common substring.
@@ -41,7 +50,7 @@ string lcstr(const string &X, const string &Y)
             if (i == 0 || j == 0) {
                 len[currRow][j] = 0;
             }
-            else if (X[i - 1] == Y[j - 1]) {
+            else if (X_[i - 1] == Y_[j - 1]) {
                 len[currRow][j] = len[1 - currRow][j - 1] + 1;
                 if (len[currRow][j] > result) {
                     result = len[currRow][j];
@@ -65,6 +74,7 @@ string lcstr(const string &X, const string &Y)
  
     // Longest common substring is from index
     // end - result + 1 to index end in X.
-    return X.substr(end - result + 1, result);
+    //return X.substr(end - result + 1, result);
+	return vect2str(slice(X_,end - result + 1, result));
 }
  

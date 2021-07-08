@@ -34,15 +34,15 @@ SOFTWARE.
 #include <cstdlib>
 
 #include "RegistExt.h"
+#include "utf8_unicode.hpp"
 #include <assert.h>
 #include <memory.h>
 
+using std::string;
+using std::vector;
+using std::to_string;
 
 #ifndef SQLITE_OMIT_VIRTUALTABLE
-
-
-
-
 
 
 #ifdef __cplusplus
@@ -61,24 +61,24 @@ int factorial(int n)
 /* Modified C permutation algorithm from 
 https://github.com/Anjan50/https-www.hackerrank.com-challenges-permutations-of-strings-problem/blob/master/Permutations%20of%20Strings.c
 
-Changed from std::string to std::vector<std::string> because of possible unicode characters having character size 2 or 4
+Changed later from string to vector<string> because of possible unicode characters having character size 2 or 4
 
 */
 
-void swap2(std::vector<std::string> &s, int i, int j){
-    std::string tmp = s[i];
+void swap2(vector<string> &s, int i, int j){
+    string tmp = s[i];
     s[i] = s[j];
     s[j] = tmp;
 }
 
 
-void reverse2(std::vector<std::string> &s, int start, int end){
+void reverse2(vector<string> &s, int start, int end){
     while(start<end){
         swap2(s,start++,end--);
     }
 }
 
-int next_permutation2(int n, std::vector<std::string> &s)
+int next_permutation2(int n, vector<string> &s)
 {
     for(int i=n-2;i>-1;i--){
         if(s[i+1] > s[i]){
@@ -108,10 +108,10 @@ struct perm_cursor {
   sqlite3_vtab_cursor base;  /* Base class - must be first */
   int isDesc;                /* True to count down rather than up */
   sqlite3_int64 iRowid;      /* The rowid */
-  std::string    perm;
+  string    perm;
   sqlite3_int64  nrows;
   sqlite3_int64  len_utf8;
-  std::vector<std::string>    permv;  
+  vector<string>    permv;  
 };
 
 
@@ -195,7 +195,7 @@ int permColumn(
      if (pCur->iRowid > 0 ){
 	   int r  = next_permutation2(pCur->len_utf8 , pCur->permv);      
      }   
-	pCur->perm = join(pCur->permv);
+	pCur->perm = vect2str(pCur->permv);
     sqlite3_result_text(ctx, pCur->perm.c_str(), pCur->perm.size(),0);
   }
   return SQLITE_OK;
@@ -251,8 +251,8 @@ int permFilter(
     pCur->iRowid = 0;	
   } else
   {	
-    const std::string errmsg = "Length of INPUT1 argument for function perm(INPUT1) must be between 1 and " \
-	                   + std::to_string(max_len) + "\n";
+    const string errmsg = "Length of INPUT1 argument for function perm(INPUT1) must be between 1 and " \
+	                   + to_string(max_len) + "\n";
     pCur->base.pVtab->zErrMsg = sqlite3_mprintf(errmsg.c_str());
     return SQLITE_ERROR;	  
   }

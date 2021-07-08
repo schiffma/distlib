@@ -59,13 +59,7 @@ link /DLL /OUT:distlib_64.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj 
 #include <assert.h>
 #include <string.h>
 
-std::string join(const std::vector<std::string> &v) {
-  std::string s="";
-   for (auto e: v){
-     s+=e;
-   }
-   return s;
-}
+using std::string;
 
 #ifdef __cplusplus
 extern "C" {
@@ -83,8 +77,8 @@ void jaroDistanceFunc(
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return; 
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = jaroDistance(zIn1, zIn2);
   sqlite3_result_double(context, l);  
 }
@@ -99,8 +93,8 @@ void jaroWinklerDistanceFunc(
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = jaroWinklerDistance(zIn1, zIn2);
   sqlite3_result_double(context, l);  
 }
@@ -114,8 +108,8 @@ void levenshteinDistanceFunc(
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   // l = levenshtein_distance(zIn1, zIn2);
   l = levenshtein_dist(zIn1, zIn2);
   sqlite3_result_int64(context, l);  
@@ -130,8 +124,8 @@ void levenshteinDistanceFuncP(
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   //l = levenshtein_distancep(zIn1, zIn2);
   l = levenshtein_distp(zIn1, zIn2);
   sqlite3_result_double(context, l);  
@@ -146,8 +140,8 @@ void dl_distFunc(
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = dl_dist(zIn1, zIn2);
   sqlite3_result_int64(context, l);  
 }
@@ -161,8 +155,8 @@ void dl_distFuncP(
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = dl_distp(zIn1, zIn2);
   sqlite3_result_double(context, l);  
 }
@@ -172,12 +166,12 @@ void lcstrFuncP(
   int argc,
   sqlite3_value **argv
 ){
-  std::string l = "";
+  string l = "";
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = lcstr(zIn1, zIn2);
   sqlite3_result_text(context, l.c_str(),l.size(), SQLITE_TRANSIENT);  
 }
@@ -191,8 +185,8 @@ void lcstrlFuncP(
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
   l = lcs2_length_(zIn1, zIn2);
   sqlite3_result_int64(context, l);  
 }
@@ -202,14 +196,14 @@ void lcstrlFuncP(
   int argc,
   sqlite3_value **argv
 ){
-  std::string l = "";
+  string l = "";
   assert( argc==2 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
-  std::string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
-  //std::u32string s = StringToWString(zIn1);
-  std::u32string s =  U"aöü";
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  //u32string s = StringToWString(zIn1);
+  u32string s =  U"aöü";
   s = s + s[2];
   sqlite3_result_text(context, u32_to_ascii(s).c_str(), u32_to_ascii(s).size(), SQLITE_TRANSIENT);  
 } */
@@ -224,7 +218,7 @@ void lcstrlFuncP(
   int l = 0;
   assert( argc==1 );
   if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
-  std::string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
   sqlite3_result_int64(context, StringToWString(zIn1).size());  
 } */
 

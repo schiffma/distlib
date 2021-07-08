@@ -34,16 +34,11 @@ SOFTWARE.
 
 // C++ functions must be declared before extern "C" !!!
 
-std::string join(const std::vector<std::string> &v);
-
-int utf8_length(const std::string &str);
-std::vector<std::string> utf8_split(const std::string &str);
-
 double jaroDistance(const std::string& a, const std::string& b);
 double jaroWinklerDistance(const std::string& a, const std::string& b);
 
-//int levenshtein_distance(const std::string &str1, const std::string &str2);
-//double levenshtein_distancep(const std::string &str1, const std::string &str2);
+//int levenshtein_distance(const string &str1, const string &str2);
+//double levenshtein_distancep(const string &str1, const string &str2);
 
 int lcs2_length_(const std::string &str1, const std::string &str2);
 
@@ -52,7 +47,7 @@ double levenshtein_distp(const std::string &word1, const std::string &word2);
 int dl_dist(const std::string &word1, const std::string &word2);
 double dl_distp(const std::string &str1, const std::string &str2);
 
-//std::string lcstr( const std::string& s0, const std::string& s1 );
+//string lcstr( const string& s0, const string& s1 );
 
 // void lcstr(const char * const sa, const char * const sb, char ** const beg, char ** const end);
 std::string lcstr(const std::string &X, const std::string &Y);

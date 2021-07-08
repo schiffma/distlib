@@ -34,14 +34,16 @@ SOFTWARE.
 #include <cstdlib>
 
 #include "RegistExt.h"
-// #include "helpers.h"
+#include "utf8_unicode.hpp"
 #include <assert.h>
 #include <memory.h>
 
+using std::string;
+using std::vector;
+using std::set;
+using std::to_string;
 
 #ifndef SQLITE_OMIT_VIRTUALTABLE
-
-
 
 
 #ifdef __cplusplus
@@ -51,30 +53,7 @@ extern "C" {
 
 // Finds and stores result in st for a given
 // string s.
-void generate(std::set<std::string>& st, std::string s)
-{
-	int s_size = utf8_length(s);
-    if (s_size == 0)
-        return;
- 
-    // If current string is not already present.
-    if (st.find(s) == st.end()) {
-        st.insert(s);
- 
-        // Traverse current string, one by one
-        // remove every character and recur.
-        for (int i = 0; i < s_size; i++) {
-            std::string t = s;
-            t.erase(i, 1);
-            generate(st, t);
-        }
-    }
-    return;
-}
-
-// Finds and stores result in st for a given
-// string s.
-void generate_(std::set<std::vector<std::string>>& st, std::vector<std::string> vs)
+void generate_(set<vector<string>>& st, vector<string> vs)
 {
 	int s_size = vs.size();
     if (s_size == 0)
@@ -87,7 +66,7 @@ void generate_(std::set<std::vector<std::string>>& st, std::vector<std::string> 
         // Traverse current string, one by one
         // remove every character and recur.
         for (int i = 0; i < s_size; i++) {
-            std::vector<std::string> t = vs;
+            vector<string> t = vs;
             t.erase(t.begin()+i);
             generate_(st, t);
         }
@@ -105,11 +84,11 @@ struct subseq_cursor {
   sqlite3_vtab_cursor base;  /* Base class - must be first */
   int isDesc;                /* True to count down rather than up */
   sqlite3_int64 iRowid;      /* The rowid */
-  std::string    subseq;
+  string    subseq;
   sqlite3_int64  nrows;
   sqlite3_int64  len_utf8;  
-  std::set<std::vector<std::string>> st;
-  std::set<std::vector<std::string>>::iterator it; 
+  set<vector<string>> st;
+  set<vector<string>>::iterator it; 
 };
 
 
@@ -192,7 +171,7 @@ int subseqColumn(
   subseq_cursor *pCur = (subseq_cursor*)cur;
 
   if (i==0) {   // only 1 column to return
-    pCur->subseq = join(*pCur->it);
+    pCur->subseq = vect2str(*pCur->it);
     sqlite3_result_text(ctx, pCur->subseq.c_str(),pCur->subseq.size(),0);
   }
   //pCur->it++;
@@ -231,7 +210,7 @@ int subseqFilter(
   subseq_cursor *pCur = (subseq_cursor *)pVtabCursor;
   const int max_len = 16;
   int l = 0; 
-  std::string s;
+  string s;
   
   if (argc > 0) {
     s = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
@@ -246,17 +225,17 @@ int subseqFilter(
   if(l>0 && l <= max_len)
   {
 	//pCur->subseq = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));  
-	//std::string s = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
+	//string s = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
 	generate_(pCur->st, utf8_split(s));
 	pCur->it = pCur->st.begin();	  
-	pCur->subseq = join(*pCur->it);
+	pCur->subseq = vect2str(*pCur->it);
 	pCur->nrows = pCur->st.size();
     pCur->iRowid = 0;	
 	
   } else
   {	 
-    const std::string errmsg = "Length of INPUT1 argument for function subseq(INPUT1) must be between 1 and " \
-	                   + std::to_string(max_len) + "\n";
+    const string errmsg = "Length of INPUT1 argument for function subseq(INPUT1) must be between 1 and " \
+	                   + to_string(max_len) + "\n";
     pCur->base.pVtab->zErrMsg = sqlite3_mprintf(errmsg.c_str());
     return SQLITE_ERROR;	  
   }

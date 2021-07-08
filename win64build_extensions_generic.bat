@@ -15,7 +15,8 @@ cl /EHsc /Flcsubstr.obj /c lcsubstr.cpp
 cl /EHsc /Foperm.obj /c perm.cpp 
 cl /EHsc /Fosubseq.obj /c subseq.cpp 
 cl /EHsc /FoRegistExt.obj /c RegistExt.cpp 
-link /DLL /OUT:distlib_64.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj
+cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp
+link /DLL /OUT:distlib_64.dll utf8_unicode.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj
 
 del *.obj
 del *.exp

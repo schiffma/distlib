@@ -5,6 +5,6 @@
 
 #include <string>
 
-int levenshtein_distance(const string &str1, const string &str2);
+int levenshtein_distance(const std::string &str1, const std::string &str2);
 
 #endif

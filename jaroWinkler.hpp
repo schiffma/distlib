@@ -5,8 +5,6 @@
 
 #include <string>
 
-
-
 const double JARO_WEIGHT_STRING_A(1.0/3.0);
 const double JARO_WEIGHT_STRING_B(1.0/3.0);
 const double JARO_WEIGHT_TRANSPOSITIONS(1.0/3.0);
