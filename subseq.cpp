@@ -154,7 +154,7 @@ int subseqClose(sqlite3_vtab_cursor *cur){
 */
 int subseqNext(sqlite3_vtab_cursor *cur){
   subseq_cursor *pCur = (subseq_cursor*)cur;
-  pCur->iRowid++;
+  pCur->iRowid++;  
   pCur->it++;
   return SQLITE_OK;
 }
@@ -173,8 +173,8 @@ int subseqColumn(
   if (i==0) {   // only 1 column to return
     pCur->subseq = vect2str(*pCur->it);
     sqlite3_result_text(ctx, pCur->subseq.c_str(),pCur->subseq.size(),0);
+	//pCur->it++;
   }
-  //pCur->it++;
   return SQLITE_OK;
 }
 
@@ -230,8 +230,7 @@ int subseqFilter(
 	pCur->it = pCur->st.begin();	  
 	pCur->subseq = vect2str(*pCur->it);
 	pCur->nrows = pCur->st.size();
-    pCur->iRowid = 0;	
-	
+    pCur->iRowid = 0;    		
   } else
   {	 
     const string errmsg = "Length of INPUT1 argument for function subseq(INPUT1) must be between 1 and " \

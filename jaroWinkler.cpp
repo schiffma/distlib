@@ -19,7 +19,7 @@ double jaroDistance(const string& a, const string& b)
     //int aLength(a.size());
     //int bLength(b.size());
 	// Register strings length utf8 compatible
-	vector<string> a_ = utf8_split(a);
+    vector<string> a_ = utf8_split(a);
     vector<string> b_ = utf8_split(b);
     int aLength = a_.size();
     int bLength = b_.size();
@@ -124,7 +124,7 @@ double jaroWinklerDistance(const string&a, const string& b)
     // Calculate Jaro distance.
     double distance(jaroDistance(a, b));
 
-	vector<string> a_ = utf8_split(a);
+    vector<string> a_ = utf8_split(a);
     vector<string> b_ = utf8_split(b);
     
     if (distance > JARO_WINKLER_BOOST_THRESHOLD)

@@ -6,7 +6,8 @@
 #include <algorithm>
 #include "utf8_unicode.hpp"
 
-using namespace std;
+using std::string;
+using std::vector;
 
 // 最长公共子序列（不连续）
 int lcs_length_(const string &str1, const string &str2) {
