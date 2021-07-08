@@ -31,6 +31,7 @@ SOFTWARE.
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <cstdlib>
 
 #include "RegistExt.h"
@@ -41,6 +42,8 @@ SOFTWARE.
 using std::string;
 using std::vector;
 using std::to_string;
+using std::sort;
+
 
 #ifndef SQLITE_OMIT_VIRTUALTABLE
 
@@ -58,47 +61,6 @@ int factorial(int n)
 }
 
 
-/* Modified C permutation algorithm from 
-https://github.com/Anjan50/https-www.hackerrank.com-challenges-permutations-of-strings-problem/blob/master/Permutations%20of%20Strings.c
-
-Changed later from string to vector<string> because of possible unicode characters having character size 2 or 4
-
-*/
-
-void swap2(vector<string> &s, int i, int j){
-    string tmp = s[i];
-    s[i] = s[j];
-    s[j] = tmp;
-}
-
-
-void reverse2(vector<string> &s, int start, int end){
-    while(start<end){
-        swap2(s,start++,end--);
-    }
-}
-
-int next_permutation2(int n, vector<string> &s)
-{
-    for(int i=n-2;i>-1;i--){
-        if(s[i+1] > s[i]){
-            /* get min max */
-            for(int j=n-1;j>i;j--){
-                if(s[j] > s[i]){
-                    /* do swap */
-                    swap2(s,i,j);
-                    /* do reverse */
-                    reverse2(s,i+1,n-1);
-                    return 1;
-                }
-            }
-        }
-    }
-    return 0;
-}
-
-
-
 /* perm_cursor is a subclass of sqlite3_vtab_cursor which will
 ** serve as the underlying representation of a cursor that scans
 ** over rows of the result
@@ -110,8 +72,8 @@ struct perm_cursor {
   sqlite3_int64 iRowid;      /* The rowid */
   string    perm;
   sqlite3_int64  nrows;
-  sqlite3_int64  len_utf8;
   vector<string>    permv;  
+  vector<string>::iterator it;   
 };
 
 
@@ -178,6 +140,7 @@ int permClose(sqlite3_vtab_cursor *cur){
 int permNext(sqlite3_vtab_cursor *cur){
   perm_cursor *pCur = (perm_cursor*)cur;
   pCur->iRowid++;
+  pCur->it++;
   return SQLITE_OK;
 }
 
@@ -193,7 +156,7 @@ int permColumn(
   perm_cursor *pCur = (perm_cursor*)cur;
   if (i==0) { // only one column to return
      if (pCur->iRowid > 0 ){
-	   int r  = next_permutation2(pCur->len_utf8 , pCur->permv);      
+	   next_permutation(pCur->permv.begin(), pCur->permv.end());     
      }   
 	pCur->perm = vect2str(pCur->permv);
     sqlite3_result_text(ctx, pCur->perm.c_str(), pCur->perm.size(),0);
@@ -230,13 +193,11 @@ int permFilter(
 ){
   perm_cursor *pCur = (perm_cursor *)pVtabCursor;
   const int max_len = 10;
-  //int l = 0; 
-  
+  int l = 0; 
+  string s;  
   if (argc > 0) {
-    ///l = strlen((const char*)sqlite3_value_text(argv[0])); 	
-    pCur->perm = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
-	pCur->permv = utf8_split(pCur->perm);
-	pCur->len_utf8 = pCur->permv.size(); // important for non-ASCII characters !!!	
+    s = sqlite3_mprintf("%s",  (const char*)sqlite3_value_text(argv[0]));
+	l  = utf8_split(s).size();	
   }
   else {
     const char *zText = "Function PERM(INPUT1) requires exactly one argument.\n";
@@ -244,10 +205,13 @@ int permFilter(
     return SQLITE_ERROR;	  
   }
 
-  if(pCur->len_utf8 >0 && pCur->len_utf8 <= max_len)
+  if(l>0 && l <= max_len)
   {
-	pCur->nrows = (pCur->len_utf8  > 0) ? factorial(pCur->len_utf8 ) : 0;
-	//pCur->nrows = (pCur->perm.size() > 0) ? factorial(pCur->perm.size()) : 0;
+	pCur->permv = utf8_split(s);
+    sort(pCur->permv.begin(), pCur->permv.end()); // initial sorting is important !!!	
+	pCur->it = pCur->permv.begin();	  
+	pCur->perm  = vect2str(pCur->permv);	
+	pCur->nrows = (l  > 0) ? factorial(l) : 0;
     pCur->iRowid = 0;	
   } else
   {	

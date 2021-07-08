@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/schiffma/Google Drive/GitHub/distlib/distlib.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="2"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1020"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/schiffma/Google Drive/GitHub/distlib/distlib.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1020"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">
 select lsim('kitten','sitting');
 
 select lsim('Clark Kent','Claire Kent');
@@ -44,6 +44,7 @@ select dldist('ääää','äääx');
 select dldist('häää','häää');
 select * from perm ('ABC');
 select * from perm ('äöü');
+select * from perm ('Müssig');
 select * from perm ('A');
 select * from perm ('Mötörhead');
 select * from perm ('Smørrebrød');
@@ -108,24 +109,56 @@ select * from subseq ('ABC');
 --select * from subseq ('A');
 
 
-</sql><sql name="SQL 4">WITH orig_ AS (SELECT 'Müssiggänger' AS orig), 
-subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
+</sql><sql name="SQL 4">WITH orig_ AS (SELECT 'Müssiggänger' AS orig), 
+subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
+SELECT * FROM ( 
+SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim, 
+dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_
+) ORDER BY dlsim DESC;
+
+WITH orig_ AS (SELECT 'Müssigäng' AS orig), 
+subseq_ AS (SELECT orig, permut subseq FROM perm(orig) JOIN orig_ ON 1=1)
 SELECT * FROM ( 
 SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim, 
 dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_
 ) ORDER BY dlsim DESC;
 
-WITH orig_ AS (SELECT 'AAA' AS orig), 
-subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
+WITH orig_ AS (SELECT 'Müssigäng' AS orig), 
+subseq_ AS (SELECT orig, permut subseq FROM perm(orig) JOIN orig_ ON 1=1)
 SELECT * FROM ( 
-SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim, 
-dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_
-) ORDER BY dlsim DESC;
-
-select * from subseq ('ABC');</sql><sql name="SQL 5">select * from perm ('Smørrebrød');
-
-select * from subseq ('ABC');
-
-select * from subseq ('ABChdasdhsahd');
-
-select * from perm ('Smørrebrød');</sql><current_tab id="1"/></tab_sql></sqlb_project>
+SELECT  dlsim(orig, subseq) dlsim
+) ORDER BY dlsim DESC;
+
+select lcstr('Müssig', 'gMüssi') lcstr;
+
+select * from perm('AACD');
+select * from perm('Müssigänge');
+
+WITH orig_ AS (SELECT 'äöü' AS orig),
+subseq_ AS (SELECT orig, permut as subseq FROM perm(orig) JOIN orig_ ON 1=1)
+select * from subseq_;
+
+WITH orig_ AS (SELECT 'ABCD' AS orig),
+subseq_ AS (SELECT orig, permut as subseq FROM perm(orig) JOIN orig_ ON 1=1)
+select orig, subseq, orig || subseq test
+from subseq_;
+
+WITH orig_ AS (SELECT 'ABCD' AS orig), 
+subseq_ AS (SELECT orig, permut as subseq FROM perm(orig) JOIN orig_ ON 1=1)
+SELECT * FROM ( 
+SELECT orig, subseq, 
+lcstr(orig, subseq) lcstr, 
+lcstrl(orig, subseq) lcstrl, 
+lsim(orig, subseq) lsim, 
+dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_
+);
+;
+
+WITH orig_ AS (SELECT 'AAA' AS orig), 
+subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
+SELECT * FROM ( 
+SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim, 
+dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_
+) ORDER BY lcstr DESC;
+
+select * from subseq ('ABC');</sql><current_tab id="2"/></tab_sql></sqlb_project>
