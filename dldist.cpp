@@ -26,7 +26,7 @@ int levenshtein_dist(const string &word1, const string &word2){
 	
     //int size1 = word1.size(), size2 = word2.size();
 
-	vector<string> word1_ = utf8_split(word1);
+    vector<string> word1_ = utf8_split(word1);
     vector<string> word2_ = utf8_split(word2);
     int size1 = word1_.size();
     int size2 = word2_.size();		
@@ -65,7 +65,7 @@ int dl_dist(const string &word1, const string &word2){
     ///
     //int size1 = word1.size(), size2 = word2.size();
 
-	vector<string> word1_ = utf8_split(word1);
+    vector<string> word1_ = utf8_split(word1);
     vector<string> word2_ = utf8_split(word2);
     int size1 = word1_.size();
     int size2 = word2_.size();		

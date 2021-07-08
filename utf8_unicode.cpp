@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include "jaroWinkler.hpp"
+#include "utf8_unicode.hpp"
 
 using std::string;
 using std::vector;
