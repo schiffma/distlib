@@ -16,10 +16,12 @@ select jsim('Clark Kent','Claire Kent');
 
 select ldist('fish', 'ifsh');
 
-WITH orig_ AS (SELECT 'äöü' AS orig), 
-subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1) 
+WITH orig_ AS (SELECT 'Müssiggänger' AS orig), 
+subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
+SELECT * FROM ( 
 SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim, 
-dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_;
+dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_
+) ORDER BY dlsim DESC;
 
 select lcstr('carpenter', 'sharpener');
 select lcstr('cärpenter', 'shärpener');
