@@ -46,8 +46,7 @@ string vect2str(const vector<string> &v) {
 vector<string> slice(vector<string> const &v, int m, int n)
 {
     auto first = v.cbegin() + m;
-    auto last = v.cbegin() + n + 1;
- 
+    auto last = v.cbegin() + n + 1;    
     std::vector<string> vec(first, last);
     return vec;
 }

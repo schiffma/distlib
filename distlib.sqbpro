@@ -1,16 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/schiffma/Google Drive/GitHub/distlib/distlib.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1020"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">WITH orig_ AS (SELECT 'ABCDEFGHIJKMNOP' AS orig), subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1) SELECT orig, subseq, lcstr(orig, subseq) lcstr, lsim(orig, subseq) lsim, dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_;
-
-WITH orig_ AS (SELECT 'Teststring' AS orig), perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1) 
-SELECT orig, permut, lcstr(orig,permut) lcstr, lsim(orig, permut) lsim, dlsim(orig, permut) dlsim, jsim(orig, permut) jsim, jwsim(orig, permut) jwsim from perm_;
-
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/schiffma/Google Drive/GitHub/distlib/distlib.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1020"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">
 select lsim('kitten','sitting');
 
-select lsim('Clark Kent','Claire Kent');
+select lsim('Clark Kent','Claire Kent');
 select lsim('Clärk Kent','Cläire Kent');
-
-select jsim('Peter Parker','Pete Parker');
-select jsim('Péter Pärker','Péte Pärker');
-
+
+select jsim('Peter Parker','Pete Parker');
+select jsim('Péter Pärker','Péte Pärker');
+
 select jwsim('Peter Parker','Pete Parker');
 select jwsim('Péter Pärker','Péte Pärker');
 
@@ -24,12 +20,14 @@ WITH orig_ AS (SELECT 'äöü' AS orig),
 subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1) 
 SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim, 
 dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_;
-
+
 select lcstr('carpenter', 'sharpener');
 select lcstr('cärpenter', 'shärpener');
+select lcstr('cärpenter', 'ärp');
+select lcstr('cärpenter', 'cörpen');
 
 select lcstr('äöü', 'äöüx');
-select lcstrl('carpenter', 'sharpener');
+select lcstrl('carpenter', 'sharpener');
 select lcstrl('cärpenter', 'shärpener');
 
 select dldist('ääää','äääx');
@@ -45,9 +43,5 @@ select * from subseq ('A');
 
 select * from subseq('Steuererklärung');
 select * from subseq('ÄÖÜ');
-
-select dummy('äöü','ABC');
-
-select dummy('äöü');
 
 select distinct permut from perm('ABCDEFGH');</sql><current_tab id="0"/></tab_sql></sqlb_project>

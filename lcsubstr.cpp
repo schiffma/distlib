@@ -9,6 +9,8 @@
 
 using std::string;
 using std::vector;
+using std::to_string;
+using std::max;
  
 // Function to find longest common substring.
 string lcstr(const string &X, const string &Y)
@@ -36,7 +38,8 @@ string lcstr(const string &X, const string &Y)
     // Matrix to store result of two
     // consecutive rows at a time.
     //int len[2][n];
-	vector<vector<int>> len(2, vector<int>(n));
+	int dim = max(n,m);
+	vector<vector<int>> len(2, vector<int>(dim));
  
     // Variable to represent which row of
     // matrix is current row.
@@ -75,6 +78,7 @@ string lcstr(const string &X, const string &Y)
     // Longest common substring is from index
     // end - result + 1 to index end in X.
     //return X.substr(end - result + 1, result);
-	return vect2str(slice(X_,end - result + 1, result));
+	//return to_string(end - result + 1) + "/" + to_string(end);
+	return vect2str(slice(X_,end - result + 1, end));
 }
  
