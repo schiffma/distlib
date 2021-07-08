@@ -1,5 +1,6 @@
 # distlib
  Distance related functions implemented as SQLite run-time loadable extension.
+ Any UTF-8 strings are supported.
 
 | SQLite function | Description |  
 | --- | --- |
@@ -23,6 +24,7 @@ Examples:
 | `select ldist('a cat','an act');` | 3 | 
 | `select dldist('a cat','an act');` | 2 | 
 | `select lsim('a cat','an act');` | 0.5 |
+| `select lsim('a cät','an äct');` | 0.5 |
 | `select dlsim('a cat','an act');` | 0.666666666666667 |
 | `select ldist('fish', 'ifsh');` | 2 |
 | `select dldist('fish', 'ifsh');` | 1 |   
