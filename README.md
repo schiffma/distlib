@@ -40,7 +40,7 @@ Examples:
 <br>
 
 Persistent bulk examples:
-
+`
 DROP TABLE IF EXISTS perm_gen;
 CREATE TABLE IF NOT EXISTS perm_gen AS
 WITH orig_ AS (SELECT 'Z''Hansrüedi' AS orig), 
@@ -62,4 +62,5 @@ DROP TABLE IF EXISTS subseq_test;
 CREATE TABLE IF NOT EXISTS subseq_test AS
 SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim, 
 dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_gen;
+`
 
