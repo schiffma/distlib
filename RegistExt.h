@@ -31,6 +31,7 @@ SOFTWARE.
 #include "sqlite3ext.h"
 #include <cstddef>
 #include <string>
+#include "pylcs.hpp"
 
 // C++ functions must be declared before extern "C" !!!
 
@@ -40,7 +41,8 @@ double jaroWinklerDistance(const std::string& a, const std::string& b);
 //int levenshtein_distance(const string &str1, const string &str2);
 //double levenshtein_distancep(const string &str1, const string &str2);
 
-int lcs2_length_(const std::string &str1, const std::string &str2);
+//structRet lcs_length_(const std::string &str1, const std::string &str2);
+structRet lcs2_length_(const std::string &str1, const std::string &str2);
 
 int levenshtein_dist(const std::string &word1, const std::string &word2);
 double levenshtein_distp(const std::string &word1, const std::string &word2);

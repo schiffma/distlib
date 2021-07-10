@@ -187,8 +187,8 @@ void lcstrlFuncP(
   if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
   string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
   string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
-  l = lcs2_length_(zIn1, zIn2);
-  sqlite3_result_int64(context, l);  
+  structRet ret = lcs2_length_(zIn1, zIn2);
+  sqlite3_result_int64(context, ret.max);  
 }
 
 /* void dummyFuncP(

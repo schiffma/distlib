@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include "pylcs.hpp"
 #include "utf8_unicode.hpp"
 
 using std::string;
@@ -43,17 +44,20 @@ int lcs_length_(const string &str1, const string &str2) {
 }
 
 
+
 // 最长公共子串（连续）
-int lcs2_length_(const string &str1, const string &str2) {
+structRet lcs2_length_(const string &str1, const string &str2) {
+    structRet ret;
+	ret.max = 0;
+	ret.start = 0;	
     if (str1 == "" || str2 == "")
-        return 0;
+        return ret;
     vector<string> s1 = utf8_split(str1);
     vector<string> s2 = utf8_split(str2);
     int m = s1.size();
     int n = s2.size();
     vector<vector<int>> dp(m + 1, vector<int>(n + 1));
     int i, j;
-    int max = 0;
 
     for (i = 0; i <= m; i++) {
         dp[i][0] = 0;
@@ -65,8 +69,9 @@ int lcs2_length_(const string &str1, const string &str2) {
         for (j = 1; j <= n; j++) {
             if (s1[i - 1] == s2[j - 1]) {
                 dp[i][j] = dp[i - 1][j - 1] + 1;
-                if (dp[i][j] > max){
-                    max = dp[i][j];
+                if (dp[i][j] > ret.max){
+                    ret.max = dp[i][j];
+					ret.start = i-ret.max;
                 }
             }
             else {
@@ -74,17 +79,7 @@ int lcs2_length_(const string &str1, const string &str2) {
             }
         }
     }
-    return max;
+    return ret;
 }
 
 
-// TODO 返回子序列
-int lcs(const string &str1, const string &str2){
-    return lcs_length_(str1, str2);
-}
-
-
-// TODO 返回子串
-int lcs2(const string &str1, const string &str2){
-    return lcs2_length_(str1, str2);
-}

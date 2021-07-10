@@ -6,33 +6,22 @@
 #include <string>
 #include <vector>
 #include "utf8_unicode.hpp"
+#include "pylcs.hpp"
 
 using std::string;
 using std::vector;
 using std::to_string;
 using std::max;
+
  
 // Function to find longest common substring.
-string lcstr(const string &X, const string &Y)
+string lcstr(const string &str1, const string &str2)
 {
-    // If a string is empty then return empty string
-    if (X == "" || Y == "") return "";
-    // Find length of both the strings.
-    //int m = X.length();
-    //int n = Y.length();
-
-	vector<string> X_ = utf8_split(X);
-    vector<string> Y_ = utf8_split(Y);
-    int m = X_.size();
-    int n = Y_.size();		
-	
-    int end = 0;
-	int result = 0;
- 
-    // Longest common substring is from index
-    // end - result + 1 to index end in X.
-    //return X.substr(end - result + 1, result);
-	return to_string(end - result + 1) + "/" + to_string(end);
-	//return vect2str(slice(X_,end - result + 1, end));
+    if (str1 == "" || str2 == "")
+        return "";	
+    structRet ret;
+	ret = lcs2_length_(str1, str2);
+    vector<string> str1v = utf8_split(str1);
+	return vect2str(slice(str1v, ret.start, ret.start + ret.max - 1));
 }
  
