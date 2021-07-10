@@ -10,7 +10,7 @@
 | `dlsim(x,y)` | Damerau–Levenshtein similarity as double between 0.0 and 1.0 |
 | `jsim(x,y)` | Jaro similarity as double between 0.0 and 1.0 | 
 | `jwsim(x,y)` | Jaro-Winkler similarity as double between 0.0 and 1.0 | 
-| `lcstr(x,y)` | Longest common substring (to be re-implemented) |
+| `lcstr(x,y)` | Longest common substring |
 | `lcstrl(x,y)` | Longest common substring length |
 | `perm(x)` | Permutation table-valued function for strings up to len(x)>=10 | 
 | `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=16 | 
