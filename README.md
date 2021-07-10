@@ -39,3 +39,27 @@ Examples:
 | `select * from subseq('ABCDEFGH');` | A,AB,ABC, ... max. 2^n-1 rows |
 <br>
 
+Persistent bulk examples:
+
+DROP TABLE IF EXISTS perm_gen;
+CREATE TABLE IF NOT EXISTS perm_gen AS
+WITH orig_ AS (SELECT 'Z''Hansrüedi' AS orig), 
+perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
+SELECT * FROM perm_;
+
+DROP TABLE IF EXISTS perm_test;
+CREATE TABLE IF NOT EXISTS perm_test AS
+SELECT orig, permut, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl, lsim(orig, permut) lsim, 
+dlsim(orig, permut) dlsim, jsim(orig, permut) jsim, jwsim(orig, permut) jwsim FROM perm_gen;
+
+DROP TABLE IF EXISTS subseq_gen;
+CREATE TABLE IF NOT EXISTS subseq_gen AS
+WITH orig_ AS (SELECT 'Lückenbüßer' AS orig), 
+subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)
+SELECT * FROM subseq_;
+
+DROP TABLE IF EXISTS subseq_test;
+CREATE TABLE IF NOT EXISTS subseq_test AS
+SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim, 
+dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_gen;
+
