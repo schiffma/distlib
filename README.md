@@ -50,7 +50,7 @@
 
 DROP TABLE IF EXISTS perm_gen;</br>
 CREATE TABLE IF NOT EXISTS perm_gen AS</br>
-WITH orig_ AS (SELECT 'Z''Hansrüedi' AS orig),</br> 
+WITH orig_ AS (SELECT 'Z''Hansrüed' AS orig),</br> 
 perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)</br>
 SELECT * FROM perm_;
 
