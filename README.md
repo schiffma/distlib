@@ -1,7 +1,7 @@
 # distlib
  Distance related functions implemented as SQLite run-time loadable extension.
  Any UTF-8 strings are supported.
- The following functions are provided:
+**Functions provided**
 
 | SQLite function | Description |  
 | --- | --- |
@@ -18,7 +18,7 @@
 | `perm(x)` | Permutation table-valued function for strings up to len(x)>=10 | 
 | `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=16 | 
 <br>
-Examples:
+**Examples:**
 
 | Query example | Result example |
 |  --- | --- | 
@@ -44,7 +44,7 @@ Examples:
 | `select * from subseq('ABCDEFGH');` | A,AB,ABC, ... max. 2^n-1 rows |
 <br>
 
-Persistent bulk examples:
+**Persistent bulk examples:**
 
 DROP TABLE IF EXISTS perm_gen;</br>
 CREATE TABLE IF NOT EXISTS perm_gen AS</br>
@@ -68,21 +68,21 @@ CREATE TABLE IF NOT EXISTS subseq_test AS</br>
 SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim,</br> 
 dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_gen;</br>
 
-How to build .dll/.so library?
+**How to build .dll/.so library?**
 
 Compile on Windows by calling win64build_extensions_generic.bat :
 
-cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp 
-cl /EHsc /Fopylcs.obj /c pylcs.cpp 
-cl /EHsc /Fdldist.obj /c dldist.cpp 
-cl /EHsc /Flcsubstr.obj /c lcsubstr.cpp 
-cl /EHsc /Foperm.obj /c perm.cpp 
-cl /EHsc /Fosubseq.obj /c subseq.cpp 
-cl /EHsc /FoRegistExt.obj /c RegistExt.cpp 
-cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp
+cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp</br> 
+cl /EHsc /Fopylcs.obj /c pylcs.cpp</br> 
+cl /EHsc /Fdldist.obj /c dldist.cpp</br> 
+cl /EHsc /Flcsubstr.obj /c lcsubstr.cpp</br> 
+cl /EHsc /Foperm.obj /c perm.cpp</br> 
+cl /EHsc /Fosubseq.obj /c subseq.cpp</br> 
+cl /EHsc /FoRegistExt.obj /c RegistExt.cpp</br> 
+cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp</br>
 link /DLL /OUT:distlib_64.dll utf8_unicode.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj
  
-Compile on Linux by linux64_build_extensions.sh :  
+Compile on Linux by linux64_build_extensions.sh :</br>  
  g++ -fPIC -lm -shared jaroWinkler.cpp  pylcs.cpp dldist.cpp lcsubstr.cpp perm.cpp subseq.cpp RegistExt.cpp utf8_unicode.cpp -o distlib_64.so 
 
 
