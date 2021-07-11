@@ -38,9 +38,9 @@
 | `select jwsim('Peter Parker','Pete Parker');` | 0.928787878787879 |
 | `select jwsim('Péter Pärker','Péte Pärker');` | 0.928787878787879 |
 | `select lcstr('carpenter', 'sharpener');` | arpen |
-| `select lcstr('carpenter', 'sharpener');` | 5 |
-| `select lcstr('cärpenter', 'shärpener');` | ärpener |
-| `select lcstr('cärpenter', 'shärpener');` | 7 |
+| `select lcstrl('carpenter', 'sharpener');` | 5 |
+| `select lcseq('cärpenter', 'shärpener');` | ärpener |
+| `select lcseql('cärpenter', 'shärpener');` | 7 |
 | `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG, ... n! rows |
 | `select * from perm ('Smørrebrød');` | Smørrebrød,Smørrebødr, ... n! rows |
 | `select * from subseq('ABCDEFGH');` | A,AB,ABC, ... max. 2^n-1 rows |
