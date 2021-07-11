@@ -2,7 +2,7 @@
  Distance related functions implemented as SQLite run-time loadable extension.
  Any UTF-8 strings are supported.</br>
 
-**Functions provided**
+**Functions provided:**
 
 | SQLite function | Description |  
 | --- | --- |
@@ -19,6 +19,7 @@
 | `perm(x)` | Permutation table-valued function for strings up to len(x)>=10 | 
 | `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=16 | 
 <br>
+
 **Examples:**
 
 | Query example | Result example |
