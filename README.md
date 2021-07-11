@@ -1,6 +1,7 @@
 # distlib
  Distance related functions implemented as SQLite run-time loadable extension.
  Any UTF-8 strings are supported.</br>
+
 **Functions provided**
 
 | SQLite function | Description |  
@@ -69,6 +70,7 @@ SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsi
 dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_gen;</br>
 
 **How to build .dll/.so library?**
+
 The library was built and tested primary on Windows 10 64-bit.</br>
 Smoke testing was also done on Linux Mint 19.3 "Tricia" and the latest Raspberry Pi OS on a Raspberry Pi 400. 
 
