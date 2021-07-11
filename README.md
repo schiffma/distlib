@@ -12,6 +12,8 @@
 | `jwsim(x,y)` | Jaro-Winkler similarity as double between 0.0 and 1.0 | 
 | `lcstr(x,y)` | Longest common substring |
 | `lcstrl(x,y)` | Longest common substring length |
+| `lcseq(x,y)` | Longest common subsequence |
+| `lcseql(x,y)` | Longest common subsequence length |
 | `perm(x)` | Permutation table-valued function for strings up to len(x)>=10 | 
 | `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=16 | 
 <br>
@@ -34,6 +36,8 @@ Examples:
 | `select jwsim('Péter Pärker','Péte Pärker');` | 0.928787878787879 |
 | `select lcstr('carpenter', 'sharpener');` | arpen |
 | `select lcstr('carpenter', 'sharpener');` | 5 |
+| `select lcstr('cärpenter', 'shärpener');` | ärpener |
+| `select lcstr('cärpenter', 'shärpener');` | 7 |
 | `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG, ... n! rows |
 | `select * from perm ('Smørrebrød');` | Smørrebrød,Smørrebødr, ... n! rows |
 | `select * from subseq('ABCDEFGH');` | A,AB,ABC, ... max. 2^n-1 rows |
