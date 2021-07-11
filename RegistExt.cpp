@@ -25,33 +25,36 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
-
-
 Compile on Windows by calling win64build_extensions_generic.bat :
 
 cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp 
 cl /EHsc /Fopylcs.obj /c pylcs.cpp 
 cl /EHsc /Fdldist.obj /c dldist.cpp 
+cl /EHsc /Flcsubstr.obj /c lcsubstr.cpp 
 cl /EHsc /Foperm.obj /c perm.cpp 
 cl /EHsc /Fosubseq.obj /c subseq.cpp 
 cl /EHsc /FoRegistExt.obj /c RegistExt.cpp 
-link /DLL /OUT:distlib_64.dll RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj
+cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp
+link /DLL /OUT:distlib_64.dll utf8_unicode.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj
  
- on Windows
+Compile on Linux by linux64_build_extensions.sh :  
+ g++ -fPIC -lm -shared jaroWinkler.cpp  pylcs.cpp dldist.cpp lcsubstr.cpp perm.cpp subseq.cpp RegistExt.cpp utf8_unicode.cpp -o distlib_64.so 
+ 
+Load extension on Windows:
  sqlite> .load distlib.dll
  sqlite>
+
+Load extension on Linux:
+ sqlite> .load ./histograms.so
+ sqlite>
  
- DB Browser for SQLite -> "Load Extension..."
+Load extension in DB Browser for SQLite (Windows / Linux)
+  DB Browser for SQLite -> "Load Extension..."
 
 */
 
-#include <iostream>
 #include <vector>
-#include <cstdlib>
 #include <string>
-#include <algorithm> // transform
-#include <iterator>  // begin, end, and back_inserter
 
 #include "RegistExt.h"
 
@@ -191,6 +194,36 @@ void lcstrlFuncP(
   sqlite3_result_int64(context, ret.max);  
 }
 
+void lcseqFuncP(
+  sqlite3_context *context,
+  int argc,
+  sqlite3_value **argv
+){
+  string l = "";
+  assert( argc==2 );
+  if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
+  if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  l = lcseq(zIn1, zIn2);
+  sqlite3_result_text(context, l.c_str(),l.size(), SQLITE_TRANSIENT);  
+}
+
+void lcseqlFuncP(
+  sqlite3_context *context,
+  int argc,
+  sqlite3_value **argv
+){
+  sqlite3_int64 l = 0;
+  assert( argc==2 );
+  if( sqlite3_value_type(argv[0])==SQLITE_NULL ) return;
+  if( sqlite3_value_type(argv[1])==SQLITE_NULL ) return;
+  string zIn1 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[0]));
+  string zIn2 = sqlite3_mprintf("%s",  (const unsigned char*)sqlite3_value_text(argv[1])); 
+  l = lcs_length_(zIn1, zIn2);
+  sqlite3_result_int64(context, l);  
+}
+
 /* void dummyFuncP(
   sqlite3_context *context,
   int argc,
@@ -279,6 +312,14 @@ int sqlite3_distlib_init( // always use lower case
   rc = sqlite3_create_function(db, "lcstrl", 2,
                    SQLITE_UTF8|SQLITE_DETERMINISTIC,
                    0, lcstrlFuncP, 0, 0); 
+
+  rc = sqlite3_create_function(db, "lcseq", 2,
+                   SQLITE_UTF8|SQLITE_DETERMINISTIC,
+                   0, lcseqFuncP, 0, 0); 
+
+  rc = sqlite3_create_function(db, "lcseql", 2,
+                   SQLITE_UTF8|SQLITE_DETERMINISTIC,
+                   0, lcseqlFuncP, 0, 0); 				   
 
 /*   rc = sqlite3_create_function(db, "dummy", 2,
                    SQLITE_UTF8|SQLITE_DETERMINISTIC,

@@ -44,8 +44,9 @@ int lcs_length_(const string &str1, const string &str2) {
 }
 
 
-
 // 最长公共子串（连续）
+// modified by Lorenz Schiffmann, July 2021
+// modified to return a struct including also the start position of the lcstr
 structRet lcs2_length_(const string &str1, const string &str2) {
     structRet ret;
 	ret.max = 0;
