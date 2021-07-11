@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS subseq_test AS</br>
 SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim,</br> 
 dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_gen;</br>
 
-**How to build .dll/.so library?**
+**How to build the .dll/.so library?**
 
 The library was built and tested primary on Windows 10 64-bit.</br>
 Smoke testing was also done on Linux Mint 19.3 "Tricia" and the latest Raspberry Pi OS on a Raspberry Pi 400. 
