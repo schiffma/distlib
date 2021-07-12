@@ -55,27 +55,27 @@
 `lcseq(orig, permut) lcseq, lcseql(orig, permut) lcseql FROM perm_`</br>
 `) ORDER BY lcstrl desc, lcseql desc;`
 
-DROP TABLE IF EXISTS perm_gen;</br>
-CREATE TABLE IF NOT EXISTS perm_gen AS</br>
-WITH orig_ AS (SELECT 'Z''Hansrüed' AS orig),</br> 
-perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)</br>
-SELECT * FROM perm_;
+`DROP TABLE IF EXISTS perm_gen;`</br>
+`CREATE TABLE IF NOT EXISTS perm_gen AS`</br>
+`WITH orig_ AS (SELECT 'Z''Hansrüed' AS orig),`</br> 
+`perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)`</br>
+`SELECT * FROM perm_;`
 
-DROP TABLE IF EXISTS perm_test;</br>
-CREATE TABLE IF NOT EXISTS perm_test AS</br>
-SELECT orig, permut, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl, lsim(orig, permut) lsim,</br> 
-dlsim(orig, permut) dlsim, jsim(orig, permut) jsim, jwsim(orig, permut) jwsim FROM perm_gen;</br>
+`DROP TABLE IF EXISTS perm_test;`</br>
+`CREATE TABLE IF NOT EXISTS perm_test AS`</br>
+`SELECT orig, permut, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl, lsim(orig, permut) lsim,`</br> 
+`dlsim(orig, permut) dlsim, jsim(orig, permut) jsim, jwsim(orig, permut) jwsim FROM perm_gen;`</br>
 
-DROP TABLE IF EXISTS subseq_gen;</br>
-CREATE TABLE IF NOT EXISTS subseq_gen AS</br>
-WITH orig_ AS (SELECT 'Lückenbüßer' AS orig),</br> 
-subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)</br>
-SELECT * FROM subseq_;</br>
+`DROP TABLE IF EXISTS subseq_gen;`</br>
+`CREATE TABLE IF NOT EXISTS subseq_gen AS`</br>
+`WITH orig_ AS (SELECT 'Lückenbüßer' AS orig),`</br> 
+`subseq_ AS (SELECT orig, subseq FROM subseq(orig) JOIN orig_ ON 1=1)`</br>
+`SELECT * FROM subseq_;`</br>
 
-DROP TABLE IF EXISTS subseq_test;</br>
-CREATE TABLE IF NOT EXISTS subseq_test AS</br>
-SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim,</br> 
-dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_gen;</br>
+`DROP TABLE IF EXISTS subseq_test;`</br>
+`CREATE TABLE IF NOT EXISTS subseq_test AS`</br>
+`SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim,`</br> 
+`dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_gen;`</br>
 
 **How to build the .dll/.so library?**
 
