@@ -1,11 +1,11 @@
-// https://github.com/Meteorix/pylcs
+// L. Schiffmann, July 2021
 
 #ifndef PYLCS_HPP
 #define PYLCS_HPP
 
 #include <string>
 
-// L. Schiffmann
+// L. Schiffmann, July 2021
 // struct for max length and start position
 
 struct structRet {

@@ -11,15 +11,15 @@ using std::string;
 using std::vector;
 using std::max;
 
-// Function to find longest common subsequence.
+// Function to find longest common substring.
 string lcstr(const string &str1, const string &str2)
 {
-    if (str1 == "" || str2 == "")
-        return "";	
-    structRet ret;
-	ret = lcs2_length_(str1, str2);
-    vector<string> str1v = utf8_split(str1);
-	return vect2str(slice(str1v, ret.start, ret.start + ret.max - 1));
+   if (str1 == "" || str2 == "")
+      return "";	
+   structRet ret;
+   ret = lcs2_length_(str1, str2);
+   vector<string> str1v = utf8_split(str1);
+   return vect2str(slice(str1v, ret.start, ret.start + ret.max - 1));
 }
  
 

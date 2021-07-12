@@ -72,8 +72,7 @@ struct perm_cursor {
   sqlite3_int64 iRowid;      /* The rowid */
   string    perm;
   sqlite3_int64  nrows;
-  vector<string>    permv;  
-  vector<string>::iterator it;   
+  vector<string>    permv;   
 };
 
 
@@ -140,7 +139,8 @@ int permClose(sqlite3_vtab_cursor *cur){
 int permNext(sqlite3_vtab_cursor *cur){
   perm_cursor *pCur = (perm_cursor*)cur;
   pCur->iRowid++;
-  pCur->it++;
+  //pCur->it++;
+  next_permutation(pCur->permv.begin(), pCur->permv.end()); 
   return SQLITE_OK;
 }
 
@@ -154,10 +154,7 @@ int permColumn(
   int i                       /* Which column to return */
 ){
   perm_cursor *pCur = (perm_cursor*)cur;
-  if (i==0) { // only one column to return
-     if (pCur->iRowid > 0 ){
-	   next_permutation(pCur->permv.begin(), pCur->permv.end());     
-     }   
+  if (i==0) { // only one column to return  
 	pCur->perm = vect2str(pCur->permv);
     sqlite3_result_text(ctx, pCur->perm.c_str(), pCur->perm.size(),0);
   }
@@ -208,8 +205,7 @@ int permFilter(
   if(l>0 && l <= max_len)
   {
 	pCur->permv = utf8_split(s);
-    sort(pCur->permv.begin(), pCur->permv.end()); // initial sorting is important !!!	
-	pCur->it = pCur->permv.begin();	  
+    sort(pCur->permv.begin(), pCur->permv.end()); // initial sorting is important !!!		  
 	pCur->perm  = vect2str(pCur->permv);	
 	pCur->nrows = (l  > 0) ? factorial(l) : 0;
     pCur->iRowid = 0;	

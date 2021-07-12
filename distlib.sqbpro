@@ -21,29 +21,42 @@ select lcseql('cärpenter', 'shärpener');
 
 select * from subseq('ABC');
 
+WITH orig_ AS (SELECT 'Z''Hansrüed' AS orig),
+perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
+SELECT * FROM perm_;
+
 DROP TABLE IF EXISTS perm_gen;
 CREATE TABLE IF NOT EXISTS perm_gen AS
 WITH orig_ AS (SELECT 'Gerät' AS orig), 
 perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
 SELECT * FROM perm_;
 
+WITH orig_ AS (SELECT 'Geräte' AS orig), 
+perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
+SELECT * FROM (
+SELECT orig, permut, orig||permut test1, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl, 
+lcseq(orig, permut) lcseq, lcseql(orig, permut) lcseql FROM perm_
+) WHERE permut = 'tGeäer';
+;
+select lcstr('Geräte','tGeäer');
+
 --CREATE TABLE IF NOT EXISTS perm_test AS
 --WITH orig_ AS (SELECT 'Z''Hansrüedi' AS orig), 
 --perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
---SELECT * FROM perm_;
-
---SELECT orig, permut, lcstr(orig, permut) lcstr
---,lcseq(orig, permut) lcseq 
+--SELECT * FROM perm_;
+
+--SELECT orig, permut, lcstr(orig, permut) lcstr
+--,lcseq(orig, permut) lcseq 
 --FROM perm_gen; 
-
+
 DROP TABLE IF EXISTS perm_test;
 CREATE TABLE IF NOT EXISTS perm_test AS
-SELECT orig, permut, lcstr(orig, permut) lcstr, lcseq(orig, permut) lcseq , 
+SELECT orig, permut, lcstr(orig, permut) lcstr, lcseq(orig, permut) lcseq , 
 lcstrl(orig, permut) lcstrl, lcseql(orig, permut) lcseql, lsim(orig, permut) lsim, 
 dlsim(orig, permut) dlsim, jsim(orig, permut) jsim, jwsim(orig, permut) jwsim FROM perm_gen
 ;
-
---SELECT * FROM perm_test;
+
+--SELECT * FROM perm_test;
 
 DROP TABLE IF EXISTS subseq_gen;
 CREATE TABLE IF NOT EXISTS subseq_gen AS
