@@ -84,17 +84,17 @@ Smoke testing was also done on Linux Mint 19.3 "Tricia" and the latest Raspberry
 
 Compile on Windows by calling win64build_extensions_generic.bat :
 
-cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp</br> 
-cl /EHsc /Fopylcs.obj /c pylcs.cpp</br> 
-cl /EHsc /Fdldist.obj /c dldist.cpp</br> 
-cl /EHsc /Flcsubstr.obj /c lcsubstr.cpp</br> 
-cl /EHsc /Foperm.obj /c perm.cpp</br> 
-cl /EHsc /Fosubseq.obj /c subseq.cpp</br> 
-cl /EHsc /FoRegistExt.obj /c RegistExt.cpp</br> 
-cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp</br>
-link /DLL /OUT:distlib_64.dll utf8_unicode.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj
+`cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp`</br> 
+`cl /EHsc /Fopylcs.obj /c pylcs.cpp`</br> 
+`cl /EHsc /Fdldist.obj /c dldist.cpp`</br> 
+`cl /EHsc /Flcsubstr.obj /c lcsubstr.cpp`</br> 
+`cl /EHsc /Foperm.obj /c perm.cpp`</br> 
+`cl /EHsc /Fosubseq.obj /c subseq.cpp`</br> 
+`cl /EHsc /FoRegistExt.obj /c RegistExt.cpp`</br> 
+`cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp`</br>
+`link /DLL /OUT:distlib_64.dll utf8_unicode.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj`
  
 Compile on Linux by linux64_build_extensions.sh :</br>  
- g++ -fPIC -lm -shared jaroWinkler.cpp  pylcs.cpp dldist.cpp lcsubstr.cpp perm.cpp subseq.cpp RegistExt.cpp utf8_unicode.cpp -o distlib_64.so 
+ `g++ -fPIC -lm -shared jaroWinkler.cpp  pylcs.cpp dldist.cpp lcsubstr.cpp perm.cpp subseq.cpp RegistExt.cpp utf8_unicode.cpp -o distlib_64.so` 
 
 
