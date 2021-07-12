@@ -94,7 +94,7 @@ Compile on Windows by calling win64build_extensions_generic.bat :
 `cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp`</br>
 `link /DLL /OUT:distlib_64.dll utf8_unicode.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj`
  
-Compile on Linux by linux64_build_extensions.sh :</br>  
+Compile on Linux by linux_build_extensions.sh :</br>  
  `g++ -fPIC -lm -shared jaroWinkler.cpp  pylcs.cpp dldist.cpp lcsubstr.cpp perm.cpp subseq.cpp RegistExt.cpp utf8_unicode.cpp -o distlib_64.so` 
 
 
