@@ -1,6 +1,8 @@
 # distlib
  Distance related functions implemented as SQLite run-time loadable extension.
- Any UTF-8 strings are supported.
+ Any UTF-8 strings are supported.</br>
+
+**Functions provided:**
 
 | SQLite function | Description |  
 | --- | --- |
@@ -17,7 +19,8 @@
 | `perm(x)` | Permutation table-valued function for strings up to len(x)>=10 | 
 | `subseq(x)` | Subsequences table-valued function for strings up to len(x)>=16 | 
 <br>
-Examples:
+
+**Examples:**
 
 | Query example | Result example |
 |  --- | --- | 
@@ -35,19 +38,19 @@ Examples:
 | `select jwsim('Peter Parker','Pete Parker');` | 0.928787878787879 |
 | `select jwsim('Péter Pärker','Péte Pärker');` | 0.928787878787879 |
 | `select lcstr('carpenter', 'sharpener');` | arpen |
-| `select lcstr('carpenter', 'sharpener');` | 5 |
-| `select lcstr('cärpenter', 'shärpener');` | ärpener |
-| `select lcstr('cärpenter', 'shärpener');` | 7 |
+| `select lcstrl('carpenter', 'sharpener');` | 5 |
+| `select lcseq('cärpenter', 'shärpener');` | ärpener |
+| `select lcseql('cärpenter', 'shärpener');` | 7 |
 | `select * from perm('ABCDEFGH');` | ABCDEFGH,ABCDEFHG, ... n! rows |
 | `select * from perm ('Smørrebrød');` | Smørrebrød,Smørrebødr, ... n! rows |
 | `select * from subseq('ABCDEFGH');` | A,AB,ABC, ... max. 2^n-1 rows |
 <br>
 
-Persistent bulk examples:
+**Persistent bulk examples:**
 
 DROP TABLE IF EXISTS perm_gen;</br>
 CREATE TABLE IF NOT EXISTS perm_gen AS</br>
-WITH orig_ AS (SELECT 'Z''Hansrüedi' AS orig),</br> 
+WITH orig_ AS (SELECT 'Z''Hansrüed' AS orig),</br> 
 perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)</br>
 SELECT * FROM perm_;
 
@@ -66,5 +69,25 @@ DROP TABLE IF EXISTS subseq_test;</br>
 CREATE TABLE IF NOT EXISTS subseq_test AS</br>
 SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl, lsim(orig, subseq) lsim,</br> 
 dlsim(orig, subseq) dlsim, jsim(orig, subseq) jsim, jwsim(orig, subseq) jwsim from subseq_gen;</br>
+
+**How to build the .dll/.so library?**
+
+The library was built and tested primary on Windows 10 64-bit.</br>
+Smoke testing was also done on Linux Mint 19.3 "Tricia" and the latest Raspberry Pi OS on a Raspberry Pi 400. 
+
+Compile on Windows by calling win64build_extensions_generic.bat :
+
+cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp</br> 
+cl /EHsc /Fopylcs.obj /c pylcs.cpp</br> 
+cl /EHsc /Fdldist.obj /c dldist.cpp</br> 
+cl /EHsc /Flcsubstr.obj /c lcsubstr.cpp</br> 
+cl /EHsc /Foperm.obj /c perm.cpp</br> 
+cl /EHsc /Fosubseq.obj /c subseq.cpp</br> 
+cl /EHsc /FoRegistExt.obj /c RegistExt.cpp</br> 
+cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp</br>
+link /DLL /OUT:distlib_64.dll utf8_unicode.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj
+ 
+Compile on Linux by linux64_build_extensions.sh :</br>  
+ g++ -fPIC -lm -shared jaroWinkler.cpp  pylcs.cpp dldist.cpp lcsubstr.cpp perm.cpp subseq.cpp RegistExt.cpp utf8_unicode.cpp -o distlib_64.so 
 
 
