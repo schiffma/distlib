@@ -31,14 +31,21 @@ WITH orig_ AS (SELECT 'Gerät' AS orig),
 perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
 SELECT * FROM perm_;
 
-WITH orig_ AS (SELECT 'Geräte' AS orig), 
-perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
-SELECT * FROM (
-SELECT orig, permut, orig||permut test1, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl, 
-lcseq(orig, permut) lcseq, lcseql(orig, permut) lcseql FROM perm_
-) WHERE permut = 'tGeäer';
-;
-select lcstr('Geräte','tGeäer');
+WITH orig_ AS (SELECT 'Geräte' AS orig),
+perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
+SELECT * FROM (
+SELECT orig, permut, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl,
+lcseq(orig, permut) lcseq, lcseql(orig, permut) lcseql FROM perm_
+) ORDER BY lcstrl desc, lcseql desc;
+
+SELECT lcstr('Geräte','tGeäer');
+
+WITH orig_ AS (SELECT 'Geräte' AS orig),
+subseq_ AS (SELECT orig, subseq  FROM subseq(orig) JOIN orig_ ON 1=1)
+SELECT * FROM (
+SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl,
+lcseq(orig, subseq) lcseq, lcseql(orig, subseq) lcseql FROM subseq_
+) ORDER BY lcstrl desc, lcseql desc;
 
 --CREATE TABLE IF NOT EXISTS perm_test AS
 --WITH orig_ AS (SELECT 'Z''Hansrüedi' AS orig), 
