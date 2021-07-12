@@ -46,7 +46,14 @@
 | `select * from subseq('ABCDEFGH');` | A,AB,ABC, ... max. 2^n-1 rows |
 <br>
 
-**Persistent bulk examples:**
+**Bulk examples:**
+
+WITH orig_ AS (SELECT 'Geräte' AS orig),</br> 
+perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)</br>
+SELECT * FROM (</br>
+SELECT orig, permut, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl,</br> 
+lcseq(orig, permut) lcseq, lcseql(orig, permut) lcseql FROM perm_</br>
+) ORDER BY lcstrl desc, lcseql desc;
 
 DROP TABLE IF EXISTS perm_gen;</br>
 CREATE TABLE IF NOT EXISTS perm_gen AS</br>
