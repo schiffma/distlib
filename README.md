@@ -82,7 +82,7 @@
 The library was primary built on Windows 10 64-bit with Visual Studio Community 2019 and tested with DB Browser for SQLite.</br>
 Smoke testing was also done on Linux Mint 19.3 "Tricia" and the latest Raspberry Pi OS on a Raspberry Pi 400. 
 
-Compile on Windows by calling win64build_extensions_generic.bat :
+Compile on Windows by reviewing & calling win64build_extensions_generic.bat :
 
 `cl /EHsc /FojaroWinkler.obj /c jaroWinkler.cpp`</br> 
 `cl /EHsc /Fopylcs.obj /c pylcs.cpp`</br> 
@@ -94,7 +94,10 @@ Compile on Windows by calling win64build_extensions_generic.bat :
 `cl /EHsc /Foutf8_unicode.obj /c utf8_unicode.cpp`</br>
 `link /DLL /OUT:distlib_64.dll utf8_unicode.obj RegistExt.obj perm.obj subseq.obj jaroWinkler.obj pylcs.obj dldist.obj lcsubstr.obj`
  
-Compile on Linux/Raspberry Pi OS by calling linux_build_extensions.sh :</br>  
- `g++ -fPIC -lm -shared jaroWinkler.cpp  pylcs.cpp dldist.cpp lcsubstr.cpp perm.cpp subseq.cpp RegistExt.cpp utf8_unicode.cpp -o distlib_64.so` 
+Compile on Linux/Raspberry Pi OS in your default shell :
+
+`chmod 755 linux_build_extensions.sh`</br>
+`./linux_build_extensions.sh`
+
 
 
