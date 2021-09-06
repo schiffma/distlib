@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/schiffma/Google Drive/GitHub/distlib/distlib.db" readonly="0" foreign_keys="0" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="0" synchronous="1"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1020"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,8:mainperm_gen"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="perm_gen" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="45"/><column index="2" value="61"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">select lsim('kitten','sitting');
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/schiffma/Google Drive/GitHub/distlib/distlib.db" readonly="0" foreign_keys="0" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="0" synchronous="1"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="735"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,8:mainperm_gen"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="perm_gen" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="72"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">select lsim('kitten','sitting');
 
 select lsim('Clark Kent','Claire Kent');
 select lsim('Clärk Kent','Cläire Kent');
@@ -31,20 +31,20 @@ WITH orig_ AS (SELECT 'Gerät' AS orig),
 perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
 SELECT * FROM perm_;
 
-WITH orig_ AS (SELECT 'Geräte' AS orig),
-perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
-SELECT * FROM (
-SELECT orig, permut, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl,
-lcseq(orig, permut) lcseq, lcseql(orig, permut) lcseql FROM perm_
+WITH orig_ AS (SELECT 'Geräte' AS orig),
+perm_ AS (SELECT orig, permut FROM perm(orig) JOIN orig_ ON 1=1)
+SELECT * FROM (
+SELECT orig, permut, lcstr(orig, permut) lcstr, lcstrl(orig, permut) lcstrl,
+lcseq(orig, permut) lcseq, lcseql(orig, permut) lcseql FROM perm_
 ) ORDER BY lcstrl desc, lcseql desc;
-
-SELECT lcstr('Geräte','tGeäer');
-
-WITH orig_ AS (SELECT 'Geräte' AS orig),
-subseq_ AS (SELECT orig, subseq  FROM subseq(orig) JOIN orig_ ON 1=1)
-SELECT * FROM (
-SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl,
-lcseq(orig, subseq) lcseq, lcseql(orig, subseq) lcseql FROM subseq_
+
+SELECT lcstr('Geräte','tGeäer');
+
+WITH orig_ AS (SELECT 'Geräte' AS orig),
+subseq_ AS (SELECT orig, subseq  FROM subseq(orig) JOIN orig_ ON 1=1)
+SELECT * FROM (
+SELECT orig, subseq, lcstr(orig, subseq) lcstr, lcstrl(orig, subseq) lcstrl,
+lcseq(orig, subseq) lcseq, lcseql(orig, subseq) lcseql FROM subseq_
 ) ORDER BY lcstrl desc, lcseql desc;
 
 --CREATE TABLE IF NOT EXISTS perm_test AS
