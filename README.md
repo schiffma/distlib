@@ -1,6 +1,6 @@
 # distlib
 
-![Alt text](./levenshtein.PNG?raw=true "Example")
+![Alt text](./levenshtein.png?raw=true "Example")
 
  Distance related functions implemented as SQLite run-time loadable extension.
  Any UTF-8 strings are supported.</br>
